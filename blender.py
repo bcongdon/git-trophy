@@ -9,6 +9,14 @@ COLORS = [
     (0.098, 0.380, 0.153)
 ]
 
+BUCKETS = [
+    0.2,
+    0.4,
+    0.6,
+    0.8,
+    1.0
+]
+
 
 def delete_all():
     for ob in bpy.context.scene.objects:
@@ -49,17 +57,25 @@ def create_user_label(mat):
     bpy.ops.object.convert(target='MESH')
 
 
+def get_bucket_for_count(count, buckets):
+    ''' Assumes sorted buckets list '''
+    for idx, c in enumerate(buckets):
+        if count < c:
+            return idx
+
+
 def create_day_bars(mats):
     # Create a bar for each day
     x = 5 - 1/7
     for week in range(52):
         y = 6/7
         for dow in range(7):
-            z = random.random()
+            z = random.normalvariate(0.5, 0.5 / 3)
             bpy.ops.mesh.primitive_cube_add(location=(x, y, z + 1))
             bpy.context.object.scale = (1.0/7, 1.0/7, z)
             day_obj = bpy.context.object
-            day_obj.data.materials.append(random.choice(mats))
+            mat_idx = get_bucket_for_count(z, BUCKETS)
+            day_obj.data.materials.append(mats[mat_idx])
             y -= 2.0/7
         x -= 2.0/7
 
