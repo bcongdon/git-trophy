@@ -1,5 +1,6 @@
 import bpy
 import random
+from github_contributions import GithubUser
 
 COLORS = [
     (0.933, 0.933, 0.933),
@@ -16,6 +17,10 @@ BUCKETS = [
     0.8,
     1.0
 ]
+
+days = GithubUser('bcongdon')._download()
+counts = [x.count for x in days]
+levels = [x.level for x in days]
 
 
 def delete_all():
@@ -66,16 +71,21 @@ def get_bucket_for_count(count, buckets):
 
 def create_day_bars(mats):
     # Create a bar for each day
+    max_count = max(counts)
     x = 5 - 1/7
+    idx = 0
     for week in range(52):
         y = 6/7
         for dow in range(7):
-            z = random.normalvariate(0.5, 0.5 / 3)
+            curr_count = counts[idx]
+            curr_level = levels[idx]
+            z = float(curr_count) / max_count
+
             bpy.ops.mesh.primitive_cube_add(location=(x, y, z + 1))
             bpy.context.object.scale = (1.0/7, 1.0/7, z)
             day_obj = bpy.context.object
             mat_idx = get_bucket_for_count(z, BUCKETS)
-            day_obj.data.materials.append(mats[mat_idx])
+            day_obj.data.materials.append(mats[curr_level])
             y -= 2.0/7
         x -= 2.0/7
 
