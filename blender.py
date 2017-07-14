@@ -1,8 +1,11 @@
 import bpy
-import random
+import math
+from datetime import datetime
 from github_contributions import GithubUser
 
-COLORS = [
+YEAR = 2016
+
+BAR_COLORS = [
     (0.933, 0.933, 0.933),
     (0.776, 0.894, 0.545),
     (0.482, 0.788, 0.435),
@@ -10,15 +13,11 @@ COLORS = [
     (0.098, 0.380, 0.153)
 ]
 
-BUCKETS = [
-    0.2,
-    0.4,
-    0.6,
-    0.8,
-    1.0
-]
+FONT_COLOR = (0.141, 0.161, 0.18)
 
-days = GithubUser('bcongdon')._download()
+BASE_COLOR = (1, 1, 1)
+
+days = GithubUser('bcongdon')._download(from_date='{}-12-31'.format(YEAR))
 counts = [x.count for x in days]
 levels = [x.level for x in days]
 
@@ -29,21 +28,23 @@ def delete_all():
     bpy.ops.object.delete()
 
 
-def create_materials():
+def create_bar_materials():
     # Create materials for day bars
-    mats = []
-    for idx, color in enumerate(COLORS):
-        mat = bpy.data.materials.new(str(idx))
-        mat.diffuse_color = color
-        mats.append(mat)
-    return mats
+    return [create_material(c, str(idx)) for idx, c in enumerate(BAR_COLORS)]
 
 
-def create_model_base(mat):
+def create_material(rgb, name):
+    mat = bpy.data.materials.new(name)
+    mat.diffuse_color = rgb
+    return mat
+
+
+def create_model_base(mat, num_weeks):
     # Create base
+    width = num_weeks / 7.0
     bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
-    bpy.context.object.scale = (52 / 7, 1, 0.5)
-    bpy.ops.transform.translate(value=((-68/7)/4, 0, 0.5))
+    bpy.context.object.scale = (width, 1, 0.5)
+    bpy.ops.transform.translate(value=(- width, 0, 0.5))
     base_obj = bpy.context.object
     base_obj.data.materials.append(mat)
 
@@ -52,42 +53,40 @@ def create_user_label(mat):
     # Create text label
     bpy.ops.object.text_add(location=(0, 0, 0))
     text_ob = bpy.context.object
-    text_ob.data.body = 'bcongdon/2016'
+    text_ob.data.body = 'bcongdon / {}'.format(YEAR)
     text_ob.data.align_x = 'LEFT'
     text_ob.data.materials.append(mat)
     bpy.ops.transform.rotate(value=1.5708, axis=(1, 0, 0))
     bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1))
     bpy.context.object.data.extrude = 0.15
-    bpy.ops.transform.translate(value=(4.75, 1.025, 0.25))
+    bpy.ops.transform.translate(value=(-2/7, 1.025, 0.25))
     bpy.ops.object.convert(target='MESH')
 
 
-def get_bucket_for_count(count, buckets):
-    ''' Assumes sorted buckets list '''
-    for idx, c in enumerate(buckets):
-        if count < c:
-            return idx
+def coords_for_year_idx(idx):
+    x0 = -1/7
+    y0 = -6/7
+    week = math.floor(idx / 7)
+    day = idx % 7
+    x = x0 - week * (2.0/7)
+    y = y0 + day * (2.0/7)
+    return x, y
 
 
 def create_day_bars(mats):
     # Create a bar for each day
     max_count = max(counts)
-    x = 5 - 1/7
-    idx = 0
-    for week in range(52):
-        y = 6/7
-        for dow in range(7):
-            curr_count = counts[idx]
-            curr_level = levels[idx]
-            z = float(curr_count) / max_count
+    max_z = 0.75
+    for idx, day in enumerate(days):
+        if day.date < datetime(YEAR, 1, 1) or day.count == 0:
+            continue
+        x, y = coords_for_year_idx(idx)
+        z = (float(day.count) / max_count) * max_z
 
-            bpy.ops.mesh.primitive_cube_add(location=(x, y, z + 1))
-            bpy.context.object.scale = (1.0/7, 1.0/7, z)
-            day_obj = bpy.context.object
-            mat_idx = get_bucket_for_count(z, BUCKETS)
-            day_obj.data.materials.append(mats[curr_level])
-            y -= 2.0/7
-        x -= 2.0/7
+        bpy.ops.mesh.primitive_cube_add(location=(x, y, z + 1))
+        bpy.context.object.scale = (1.0/7, 1.0/7, z)
+        day_obj = bpy.context.object
+        day_obj.data.materials.append(mats[day.level])
 
 
 def join_all_objects():
@@ -98,8 +97,11 @@ def join_all_objects():
 
 
 delete_all()
-mats = create_materials()
-create_model_base(mats[0])
-create_user_label(mats[2])
-create_day_bars(mats)
+bar_mats = create_bar_materials()
+font_mat = create_material(FONT_COLOR, 'font')
+base_mat = create_material(BASE_COLOR, 'base')
+num_weeks = math.ceil(len(days) / 7)
+create_model_base(base_mat, num_weeks)
+create_user_label(font_mat)
+create_day_bars(bar_mats)
 join_all_objects()
