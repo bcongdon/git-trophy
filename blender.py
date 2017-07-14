@@ -58,8 +58,8 @@ def create_user_label(mat):
     text_ob.data.materials.append(mat)
     bpy.ops.transform.rotate(value=1.5708, axis=(1, 0, 0))
     bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1))
-    bpy.context.object.data.extrude = 0.15
-    bpy.ops.transform.translate(value=(-2/7, 1.025, 0.25))
+    bpy.context.object.data.extrude = 0.075
+    bpy.ops.transform.translate(value=(-2/7, 0.975, 0.25))
     bpy.ops.object.convert(target='MESH')
 
 
@@ -105,3 +105,5 @@ create_model_base(base_mat, num_weeks)
 create_user_label(font_mat)
 create_day_bars(bar_mats)
 join_all_objects()
+bpy.ops.wm.collada_export(filepath='output.dae')
+bpy.ops.wm.quit_blender()
