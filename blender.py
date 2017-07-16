@@ -1,6 +1,6 @@
 import bpy
 import math
-from datetime import datetime
+from datetime import date
 from github_contributions import GithubUser
 
 YEAR = 2016
@@ -17,9 +17,9 @@ FONT_COLOR = (0.141, 0.161, 0.18)
 
 BASE_COLOR = (1, 1, 1)
 
-days = GithubUser('bcongdon')._download(from_date='{}-12-31'.format(YEAR))
-counts = [x.count for x in days]
-levels = [x.level for x in days]
+contributions = GithubUser('bcongdon').contributions(end_date='{}-12-31'.format(YEAR))
+counts = [x.count for x in contributions.days]
+levels = [x.level for x in contributions.days]
 
 
 def delete_all():
@@ -77,8 +77,8 @@ def create_day_bars(mats):
     # Create a bar for each day
     max_count = max(counts)
     max_z = 0.75
-    for idx, day in enumerate(days):
-        if day.date < datetime(YEAR, 1, 1) or day.count == 0:
+    for idx, day in enumerate(contributions.days):
+        if day.date < date(YEAR, 1, 1) or day.count == 0:
             continue
         x, y = coords_for_year_idx(idx)
         z = (float(day.count) / max_count) * max_z
@@ -100,7 +100,7 @@ delete_all()
 bar_mats = create_bar_materials()
 font_mat = create_material(FONT_COLOR, 'font')
 base_mat = create_material(BASE_COLOR, 'base')
-num_weeks = math.ceil(len(days) / 7)
+num_weeks = math.ceil(len(contributions.days) / 7)
 create_model_base(base_mat, num_weeks)
 create_user_label(font_mat)
 create_day_bars(bar_mats)
