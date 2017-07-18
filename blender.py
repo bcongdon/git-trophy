@@ -17,7 +17,10 @@ FONT_COLOR = (0.141, 0.161, 0.18)
 
 BASE_COLOR = (1, 1, 1)
 
-contributions = GithubUser('bcongdon').contributions(end_date='{}-12-31'.format(YEAR))
+contributions = GithubUser('bcongdon').contributions(
+    end_date='{}-12-31'.format(YEAR)
+)
+
 counts = [x.count for x in contributions.days]
 levels = [x.level for x in contributions.days]
 
@@ -105,5 +108,5 @@ create_model_base(base_mat, num_weeks)
 create_user_label(font_mat)
 create_day_bars(bar_mats)
 join_all_objects()
-bpy.ops.wm.collada_export(filepath='output.dae')
+bpy.ops.export_scene.x3d(filepath='output.dae')
 bpy.ops.wm.quit_blender()
