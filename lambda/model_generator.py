@@ -1,9 +1,14 @@
-import bpy
 import math
 from datetime import date
 from github_contributions import GithubUser
 import tempfile
 import os
+
+try:
+    import bpy
+except ImportError:
+    from bpy_lambda import bpy
+
 
 BAR_COLORS = [
     (0.933, 0.933, 0.933),

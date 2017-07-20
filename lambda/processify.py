@@ -3,7 +3,7 @@ import os
 import sys
 import traceback
 from functools import wraps
-from multiprocessing import Process, Queue
+from multiprocessing import Process, Pipe
 
 
 def processify(func):
@@ -14,7 +14,7 @@ def processify(func):
     run in parallel.
     '''
 
-    def process_func(q, *args, **kwargs):
+    def process_func(pipe, *args, **kwargs):
         try:
             ret = func(*args, **kwargs)
         except Exception:
@@ -24,7 +24,7 @@ def processify(func):
         else:
             error = None
 
-        q.put((ret, error))
+        pipe.send((ret, error))
 
     # register original function with different name
     # in sys.modules so it is pickable
@@ -33,10 +33,10 @@ def processify(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        q = Queue()
-        p = Process(target=process_func, args=[q] + list(args), kwargs=kwargs)
+        parent_conn, child_conn = Pipe()
+        p = Process(target=process_func, args=[child_conn] + list(args), kwargs=kwargs)
         p.start()
-        ret, error = q.get()
+        ret, error = parent_conn.recv()
         p.join()
 
         if error:
