@@ -21,9 +21,8 @@ BASE_COLOR = (1, 1, 1)
 def delete_all():
     '''Deletes all objects in a scene
     '''
-    for ob in bpy.context.scene.objects:
-        ob.select = True
-    bpy.ops.object.delete()
+    for obj in bpy.data.objects:
+        bpy.data.objects.remove(obj, True)
 
 
 def create_bar_materials():
@@ -51,6 +50,7 @@ def create_model_base(mat, num_weeks):
     base_obj.scale = (width, 1, 0.5)
     base_obj.location = (- width, 0, 0.5)
     base_obj.data.materials.append(mat)
+    base_obj.data.materials[0] = mat
 
 
 def create_user_label(mat, username, year):
@@ -62,11 +62,15 @@ def create_user_label(mat, username, year):
     text_ob.data.body = '{} / {}'.format(username, year)
     text_ob.data.align_x = 'LEFT'
     text_ob.data.materials.append(mat)
-    # bpy.ops.transform.rotate(value=1.5708, axis=(1, 0, 0))
-    # bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1))
+
     text_ob.data.extrude = 0.075
-    text_ob.location = (-2/7, 0.975, 0.25)
-    # text_ob.data.convert(target='MESH')
+
+    text_mesh = text_ob.to_mesh(bpy.context.scene, True, 'PREVIEW')
+    text_mesh_ob = bpy.data.objects.new("text_mesh", text_mesh)
+    text_mesh_ob.rotation_euler = [1.5709, 0, 3.14159]
+    text_mesh_ob.location = (-2/7, 0.975, 0.25)
+    bpy.context.scene.objects.link(text_mesh_ob)
+    bpy.data.objects.remove(text_ob, True)
 
 
 def coords_for_year_idx(idx):
@@ -104,8 +108,16 @@ def create_day_bars(mats, counts, contributions, year):
 def join_all_objects():
     ''' Joins all objects in the scene into a mesh
     '''
+    obs = []
     for ob in bpy.context.scene.objects:
-        ob.select = True
+        if ob.type == 'MESH':
+            ob.select = True
+            print(ob.data.materials)
+            bpy.context.scene.objects.active = ob
+            obs.append(ob)
+        else:
+            ob.select = False
+
     bpy.ops.object.join()
 
 
@@ -127,6 +139,9 @@ def create_contribution_model(username, year):
 
     counts = [x.count for x in contributions.days]
 
+    for scene in bpy.data.scenes:
+        scene.render.engine = 'BLENDER_RENDER'
+
     delete_all()
     bar_mats = create_bar_materials()
     font_mat = create_material(FONT_COLOR, 'font')
@@ -135,7 +150,11 @@ def create_contribution_model(username, year):
     create_model_base(base_mat, num_weeks)
     create_user_label(font_mat, username, year)
     create_day_bars(bar_mats, counts, contributions, year)
-    # join_all_objects()
+    join_all_objects()
+
+
+def get_model_data(username, year):
+    create_contribution_model(username, year)
 
     # Get a temp file for saving the x3d data
     fd, file_path = tempfile.mkstemp(suffix='.x3d')
@@ -145,7 +164,7 @@ def create_contribution_model(username, year):
     bpy.ops.export_scene.x3d(filepath=file_path)
 
     # Read back x3d data
-    with open(file_path, 'r') as f:
+    with open(file_path, 'rb') as f:
         x3d_data = f.read()
 
     # Remove temp file
