@@ -47,9 +47,9 @@ def create_model_base(mat, num_weeks):
     '''
     width = num_weeks / 7.0
     bpy.ops.mesh.primitive_cube_add(location=(0, 0, 0))
-    bpy.context.object.scale = (width, 1, 0.5)
-    bpy.ops.transform.translate(value=(- width, 0, 0.5))
-    base_obj = bpy.context.object
+    base_obj = bpy.context.scene.objects.active
+    base_obj.scale = (width, 1, 0.5)
+    base_obj.location = (- width, 0, 0.5)
     base_obj.data.materials.append(mat)
 
 
@@ -58,15 +58,15 @@ def create_user_label(mat, username, year):
         year
     '''
     bpy.ops.object.text_add(location=(0, 0, 0))
-    text_ob = bpy.context.object
+    text_ob = bpy.context.scene.objects.active
     text_ob.data.body = '{} / {}'.format(username, year)
     text_ob.data.align_x = 'LEFT'
     text_ob.data.materials.append(mat)
-    bpy.ops.transform.rotate(value=1.5708, axis=(1, 0, 0))
-    bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1))
-    bpy.context.object.data.extrude = 0.075
-    bpy.ops.transform.translate(value=(-2/7, 0.975, 0.25))
-    bpy.ops.object.convert(target='MESH')
+    # bpy.ops.transform.rotate(value=1.5708, axis=(1, 0, 0))
+    # bpy.ops.transform.rotate(value=3.14159, axis=(0, 0, 1))
+    text_ob.data.extrude = 0.075
+    text_ob.location = (-2/7, 0.975, 0.25)
+    # text_ob.data.convert(target='MESH')
 
 
 def coords_for_year_idx(idx):
@@ -96,8 +96,8 @@ def create_day_bars(mats, counts, contributions, year):
         z = (float(day.count) / max_count) * max_z
 
         bpy.ops.mesh.primitive_cube_add(location=(x, y, z + 1))
-        bpy.context.object.scale = (1.0/7, 1.0/7, z)
-        day_obj = bpy.context.object
+        day_obj = bpy.context.scene.objects.active
+        day_obj.scale = (1.0/7, 1.0/7, z)
         day_obj.data.materials.append(mats[day.level])
 
 
@@ -135,7 +135,7 @@ def create_contribution_model(username, year):
     create_model_base(base_mat, num_weeks)
     create_user_label(font_mat, username, year)
     create_day_bars(bar_mats, counts, contributions, year)
-    join_all_objects()
+    # join_all_objects()
 
     # Get a temp file for saving the x3d data
     fd, file_path = tempfile.mkstemp(suffix='.x3d')
