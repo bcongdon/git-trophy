@@ -1,2 +1,3 @@
-# 3d-contributions
-🖨 3D Print Your Github Contributions Chart
+# git-trophy
+
+🏆 Create a 3D Printed Model of Your Github Contributions
