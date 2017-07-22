@@ -34,7 +34,12 @@ def processify(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         parent_conn, child_conn = Pipe()
-        p = Process(target=process_func, args=[child_conn] + list(args), kwargs=kwargs)
+        p = Process(
+            target=process_func,
+            args=[child_conn] + list(args),
+            kwargs=kwargs
+        )
+
         p.start()
         ret, error = parent_conn.recv()
         p.join()
