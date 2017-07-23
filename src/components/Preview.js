@@ -21,7 +21,7 @@ export default class Preview extends React.Component {
   }
 
   componentDidMount () {
-    const controls = new OrbitControls(this.refs.camera)
+    const controls = new OrbitControls(this.refs.camera, this.refs.container)
     controls.minDistance = 9
     controls.maxDistance = 25
     controls.enablePan = false
@@ -53,7 +53,7 @@ export default class Preview extends React.Component {
     }
 
     return (
-      <div style={{cursor: 'move'}}>
+      <div style={{cursor: 'move'}} ref='container'>
         <React3 onAnimate={this.onAnimate} antialias mainCamera='maincamera' width={width} height={height} clearColor={0xffffff}>
           <scene>
           
