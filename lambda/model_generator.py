@@ -20,7 +20,7 @@ BAR_COLORS = [
 
 FONT_COLOR = (0.141, 0.161, 0.18)
 
-BASE_COLOR = (1, 1, 1)
+BASE_COLOR = (0.827, 0.827, 0.827)
 
 
 def delete_all():

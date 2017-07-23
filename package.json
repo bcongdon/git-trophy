@@ -24,7 +24,8 @@
     "react-three-renderer": "^3.1.0",
     "semantic-ui-react": "^0.71.1",
     "three": "^0.84.0",
-    "three-orbit-controls": "^82.1.0"
+    "three-orbit-controls": "^82.1.0",
+    "three-x3d-loader": "git+https://github.com/bcongdon/three-x3d-loader.git"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -41,7 +42,6 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^3.0.1",
-    "ghooks": "^2.0.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "webpack": "^3.3.0",
