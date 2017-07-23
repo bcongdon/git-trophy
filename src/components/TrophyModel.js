@@ -4,7 +4,6 @@ import * as THREE from 'three'
 import X3DLoader from 'three-x3d-loader'
 X3DLoader(THREE)
 
-
 class TrophyModel extends React.Component {
   constructor (props) {
     super(props)
@@ -19,8 +18,7 @@ class TrophyModel extends React.Component {
       const meshes = []
       let scale = new THREE.Vector3()
       let quaternion = new THREE.Quaternion()
-      scene.traverse (function (object)
-      {
+      scene.traverse(function (object) {
         if (object instanceof THREE.Mesh) {
           const oldMaterial = object.material
           object.material = new THREE.MeshStandardMaterial()
@@ -30,8 +28,7 @@ class TrophyModel extends React.Component {
           object.material.side = THREE.BackSide
           object.geometry.computeFlatVertexNormals()
           meshes.push(threeMeshToReactMesh(object))
-        }
-        else if (object instanceof THREE.Object3D && object.name === 'Cube_TRANSFORM') {
+        } else if (object instanceof THREE.Object3D && object.name === 'Cube_TRANSFORM') {
           scale = object.scale
           quaternion = object.quaternion
         }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 import { Segment } from 'semantic-ui-react'
 import ContainerDimensions from 'react-container-dimensions'
 import Preview from './Preview'

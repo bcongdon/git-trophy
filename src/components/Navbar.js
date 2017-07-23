@@ -9,4 +9,4 @@ const Navbar = () => (
   </Menu>
 )
 
-export default Navbar 
+export default Navbar

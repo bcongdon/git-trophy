@@ -1,5 +1,5 @@
 import React from 'react'
-import { Segment, Button, Dropdown, Form } from 'semantic-ui-react'
+import { Segment, Button, Form } from 'semantic-ui-react'
 
 export default class RepoSelector extends React.Component {
   render () {
