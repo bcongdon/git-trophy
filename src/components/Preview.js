@@ -61,11 +61,11 @@ export default class Preview extends React.Component {
 
             <directionalLight
               color={0xffffff}
-              intensity={0.6}
+              intensity={0.7}
               castShadow
               ref='light' />
 
-            <ambientLight color={0xffffff} intensity={0.6} />
+            <ambientLight color={0xffffff} intensity={0.7} />
 
             <TrophyModel />
 
