@@ -26,7 +26,8 @@
     "semantic-ui-react": "^0.71.1",
     "three": "^0.84.0",
     "three-orbit-controls": "^82.1.0",
-    "three-x3d-loader": "git+https://github.com/bcongdon/three-x3d-loader.git"
+    "three-x3d-loader": "git+https://github.com/bcongdon/three-x3d-loader.git",
+    "xmlbuilder": "^9.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
