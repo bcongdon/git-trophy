@@ -32,7 +32,7 @@ export default class RepoSelector extends React.Component {
             <Form.Input
               defaultValue={DEFAULT_GITHUB_ENTITY}
               label='Github Username or Repo'
-              placeholder='User / Repo Name'/>
+              placeholder='User / Repo Name' />
           </Form.Field>
           <Form.Field>
             <label>Year</label>

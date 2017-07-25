@@ -52,11 +52,16 @@ export default class Preview extends React.Component {
       lookAt: new THREE.Vector3(0, 0, 0)
     }
 
+    const data = []
+    for (var i = 0; i < 368; i++) {
+      data.push({count: Math.random(), level: Math.floor(Math.random() * 5)})
+    }
+
     return (
       <div style={{cursor: 'move'}} ref='container'>
         <React3 onAnimate={this.onAnimate} antialias mainCamera='maincamera' width={width} height={height} clearColor={0xffffff}>
           <scene>
-          
+
             <perspectiveCamera ref='camera' name='maincamera' {...cameraprops} />
 
             <directionalLight
@@ -67,7 +72,10 @@ export default class Preview extends React.Component {
 
             <ambientLight color={0xffffff} intensity={0.7} />
 
-            <TrophyModel />
+            <TrophyModel
+              data={data}
+              username={'bcongdon'}
+              year={2016} />
 
           </scene>
         </React3>
