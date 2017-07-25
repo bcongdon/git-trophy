@@ -23,10 +23,10 @@ class TrophyModel extends React.Component {
     }
   }
 
-  getBase (numWeeks) {
-    const width = numWeeks / 7
+  getBase (numDays) {
+    const width = Math.ceil(numDays / 7) / 7
     return (
-      <mesh position={new THREE.Vector3(-width/2, -3/14, -3/7)}>
+      <mesh position={new THREE.Vector3((-width/2) - 1/14, 0, -3/7)}>
         <boxGeometry
           width={width}
           height={.5}
@@ -51,8 +51,8 @@ class TrophyModel extends React.Component {
 
   getBars () {
     const data = []
-    for(var i = 0; i < 365; i++) {
-      data.push(Math.random())
+    for(var i = 0; i < 368; i++) {
+      data.push({count: Math.random(), level: Math.floor(Math.random() * 5)})
     }
 
     const x0 = -1/7, z0 = -6/7
@@ -62,7 +62,7 @@ class TrophyModel extends React.Component {
       const dayOfWeek = idx % 7
       const pos = new THREE.Vector3(
         x0 - week * 1/7,
-        (.5) * day,
+        (.5) * day.count + .25,
         z0 + dayOfWeek * 1/7,
       )
 
@@ -70,10 +70,10 @@ class TrophyModel extends React.Component {
         <mesh key={idx} position={pos}>
           <boxGeometry
             width={1/7}
-            height={day}
+            height={day.count}
             depth={1/7}/>
           <meshStandardMaterial
-            color={new THREE.Color(BAR_COLORS[1])}
+            color={new THREE.Color(BAR_COLORS[day.level])}
             roughness={1}
             shading={THREE.FlatShading}/>
         </mesh>
@@ -81,39 +81,12 @@ class TrophyModel extends React.Component {
     })
   }
 
-  componentWillMount () {
-    
-
-    // const loader = new THREE.X3DLoader()
-    // loader.load('model.x3d', (scene) => {
-    //   const meshes = []
-    //   let scale = new THREE.Vector3()
-    //   let quaternion = new THREE.Quaternion()
-
-    //   scene.traverse(function (object) {
-    //     if (object instanceof THREE.Mesh) {
-    //       const oldMaterial = object.material
-    //       object.material = new THREE.MeshStandardMaterial()
-    //       object.material.color = oldMaterial.color
-    //       object.material.roughness = 1
-    //       object.material.metalness = 0
-    //       object.material.side = THREE.BackSide
-    //       object.geometry.computeFlatVertexNormals()
-    //       meshes.push(threeMeshToReactMesh(object))
-    //     } else if (object instanceof THREE.Object3D && object.name === 'Cube_TRANSFORM') {
-    //       scale = object.scale
-    //       quaternion = object.quaternion
-    //     }
-    //   })
-    //   this.setState({meshes, scale, quaternion})
-    // })
-  }
-
   render () {
     const { meshes, scale, quaternion } = this.state
+    const width = Math.ceil(368 / 7) / 7
     return (
-      <object3D scale={scale} quaternion={quaternion}>
-        {this.getBase(52)}
+      <object3D position={new THREE.Vector3(width/2 + 1/14, 0, 3/7)}>
+        {this.getBase(368)}
         {this.getBars()}
       </object3D>
     )
