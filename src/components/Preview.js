@@ -22,7 +22,7 @@ export default class Preview extends React.Component {
 
   componentDidMount () {
     const controls = new OrbitControls(this.refs.camera, this.refs.container)
-    controls.minDistance = 9
+    controls.minDistance = 3
     controls.maxDistance = 25
     controls.enablePan = false
     this.controls = controls

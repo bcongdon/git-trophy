@@ -9,7 +9,6 @@ function createX3DRoot() {
 }
 
 function exportMaterial(material, tree) {
-  console.log(material)
   tree.ele('Appearance')
     .ele('Material')
     .att('diffuseColor', material.color.toArray().join(' '))
@@ -19,12 +18,12 @@ function exportGeometry(geometry, tree) {
   tree.ele('IndexedFaceSet')
     .att('solid', true)
     .att('coordIndex', geometry.faces.reduce((arr, v) => {
-      return arr.concat([v.a, v.b, v.c])
+      return arr.concat([v.a, v.b, v.c, -1])
     }, []).join(' '))
-      .ele('Coordinate')
-      .att('point', geometry.vertices.reduce((arr, v) => {
-        return arr.concat(v.toArray())
-      }, []).join(' '))
+    .ele('Coordinate')
+    .att('point', geometry.vertices.reduce((arr, v) => {
+      return arr.concat(v.toArray())
+    }, []).join(' '))
 }
 
 function exportObject(object, tree) {
