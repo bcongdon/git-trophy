@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import * as THREE from 'three'
 import exportX3DScene from '../x3d-exporter'
+import droidFont from '../../node_modules/three/examples/fonts/droid/droid_sans_regular.typeface.json'
 import X3DLoader from 'three-x3d-loader'
 X3DLoader(THREE)
 
@@ -14,6 +15,8 @@ const BAR_COLORS = [
   0x239a3b,
   0x195127
 ]
+
+const ROUGHNESS = 0.8
 
 class TrophyModel extends React.Component {
   static propTypes = {
@@ -35,18 +38,29 @@ class TrophyModel extends React.Component {
           depth={1} />
         <meshStandardMaterial
           color={BASE_COLOR}
-          roughness={1}
+          roughness={ROUGHNESS}
           shading={THREE.FlatShading} />
       </mesh>
     )
   }
 
   getLabel () {
+    const width = Math.ceil(this.props.data.length / 7) / 7
+    const truncatedName = (
+      this.props.username.length < 23 ? this.props.username : this.props.username.slice(0, 20) + '...'
+    )
+
     return (
-      <mesh>
+      <mesh position={new THREE.Vector3(-width, -0.125, 0)}>
         <textGeometry
-          text={`${this.props.username} / ${this.props.year}`}
-          size={32} />
+          text={`${truncatedName} / ${this.props.year}`}
+          size={0.33}
+          height={0.1}
+          font={new THREE.Font(droidFont)} />
+        <meshStandardMaterial
+          color={FONT_COLOR}
+          roughness={ROUGHNESS}
+          shading={THREE.FlatShading} />
       </mesh>
     )
   }
@@ -71,7 +85,7 @@ class TrophyModel extends React.Component {
             depth={1 / 7} />
           <meshStandardMaterial
             color={new THREE.Color(BAR_COLORS[day.level])}
-            roughness={1}
+            roughness={ROUGHNESS}
             shading={THREE.FlatShading} />
         </mesh>
       )
@@ -84,6 +98,7 @@ class TrophyModel extends React.Component {
       <object3D position={new THREE.Vector3(width / 2 + 1 / 14, 0, 3 / 7)}>
         {this.getBase()}
         {this.getBars()}
+        {this.getLabel()}
       </object3D>
     )
   }

@@ -16,13 +16,13 @@ export default class Preview extends React.Component {
     super(props)
 
     this.state = {
-      cameraPosition: new THREE.Vector3(1, 3, 10)
+      cameraPosition: new THREE.Vector3(1, 1.5, 5)
     }
   }
 
   componentDidMount () {
     const controls = new OrbitControls(this.refs.camera, this.refs.container)
-    controls.minDistance = 3
+    controls.minDistance = 4
     controls.maxDistance = 25
     controls.enablePan = false
     this.controls = controls
