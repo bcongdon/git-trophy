@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import Flask, request, Response, jsonify
+from flask import Flask, request, Response, jsonify, abort
 from processify import processify
 from github_contributions import GithubUser
 from flask_cors import CORS
@@ -21,24 +21,55 @@ def generate_model():
     return Response(x3d_data, mimetype='model/x3d+xml')
 
 
-@app.route('/v1/contributions/<username>/<year>')
-def contributions(username, year):
-    contributions = GithubUser(username).contributions(
-        end_date='{}-12-31'.format(year)
-    )
+def get_user_contributions(username, year):
+    try:
+        contributions = GithubUser(github_entity).contributions(
+            start_date='{}-01-01'.format(year),
+            end_date='{}-12-31'.format(year)
+        )
+    except:
+        abort(400, 'unable to get data for user: {}'.format(username))
+
+    return [
+        dict(day=d.date.isoformat(), count=d.count, level=d.level)
+        for d in contributions.days
+    ]
+
+
+@app.route('/v1/contributions')
+def contributions():
+    try:
+        github_entity = request.args.get('entity')
+    except:
+        return jsonify(error='must provide entity'), 400
+
+    try:
+        year = int(request.args.get('year'))
+    except:
+        return jsonify(error='invalid year: {}'.format(year)), 400
+
+    if '/' in github_entity:
+        # TODO: process repo
+        pass
+    else:
+        contributions_data = get_user_contributions(github_entity, year)
 
     return jsonify({
         'status': 'success',
-        'username': 'username',
-        'year': 'year',
-        'contributions': [dict(day=d.date, count=d.count, level=d.level)
-                          for d in contributions.days]
+        'entity': github_entity,
+        'year': year,
+        'contributions': contributions_data
     })
 
 
-@app.route('/v1/years/<username>')
+@app.route('/v1/years')
 def years(username):
     pass
+
+
+@app.errorhandler(400)
+def error_handler(error):
+    return jsonify({'error': error.description}), 400
 
 
 if __name__ == '__main__':
