@@ -16,7 +16,7 @@ export default class Preview extends React.Component {
     super(props)
 
     this.state = {
-      cameraPosition: new THREE.Vector3(1, 1.5, 5)
+      cameraPosition: new THREE.Vector3(1, 2, 5)
     }
   }
 

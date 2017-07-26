@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import * as THREE from 'three'
 import exportX3DScene from '../x3d-exporter'
 import droidFont from '../../node_modules/three/examples/fonts/droid/droid_sans_regular.typeface.json'
-import X3DLoader from 'three-x3d-loader'
-X3DLoader(THREE)
+import axios from 'axios'
 
 const BASE_COLOR = 0xdedede
 const FONT_COLOR = 0x24292e
@@ -15,23 +14,44 @@ const BAR_COLORS = [
   0x239a3b,
   0x195127
 ]
-
 const ROUGHNESS = 0.8
+const MAX_BAR_Z = 0.8
+
+const BASE_URL = 'http://localhost:5000'
+
 
 class TrophyModel extends React.Component {
   static propTypes = {
     username: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired,
-    data: PropTypes.arrayOf(PropTypes.shape({
-      count: PropTypes.number.isRequired,
-      level: PropTypes.number.isRequired
-    })).isRequired
+    year: PropTypes.number.isRequired
+  }
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      data: []
+    }
+  }
+
+  fetchContributions (username, year) {
+    axios.get(BASE_URL + `/v1/contributions/${username}/${year}`)
+      .then((response) => {
+        this.setState({data: response.data.contributions})
+      })
+  }
+
+  componentWillMount () {
+    this.fetchContributions(this.props.username, this.props.year)
+  }
+
+  componentWillReceiveProps (nextProps) {
+    this.fetchContributions(nextProps.username, nextProps.year)
   }
 
   getBase () {
-    const width = Math.ceil(this.props.data.length / 7) / 7
+    const width = Math.ceil(this.state.data.length / 7) / 7
     return (
-      <mesh position={new THREE.Vector3((-width / 2) - 1 / 14, 0, -3 / 7)}>
+      <mesh position={new THREE.Vector3((width / 2) - 3 / 14, 0, -3 / 7)}>
         <boxGeometry
           width={width}
           height={0.5}
@@ -45,13 +65,13 @@ class TrophyModel extends React.Component {
   }
 
   getLabel () {
-    const width = Math.ceil(this.props.data.length / 7) / 7
+    const width = Math.ceil(this.state.data.length / 7) / 7
     const truncatedName = (
       this.props.username.length < 23 ? this.props.username : this.props.username.slice(0, 20) + '...'
     )
 
     return (
-      <mesh position={new THREE.Vector3(-width, -0.125, 0)}>
+      <mesh position={new THREE.Vector3(0, -0.125, 0)}>
         <textGeometry
           text={`${truncatedName} / ${this.props.year}`}
           size={0.33}
@@ -68,12 +88,18 @@ class TrophyModel extends React.Component {
   getBars () {
     const x0 = -1 / 7
     const z0 = -6 / 7
-    return this.props.data.map((day, idx) => {
+
+    const maxCount = this.state.data.reduce((prev, curr) => {
+      return curr.count > prev ? curr.count : prev
+    }, 0)
+
+    return this.state.data.map((day, idx) => {
       const week = Math.floor(idx / 7)
       const dayOfWeek = idx % 7
+      const height = MAX_BAR_Z * (day.count / maxCount)
       const pos = new THREE.Vector3(
-        x0 - week * 1 / 7,
-        (0.5) * day.count + 0.25,
+        x0 + week * 1 / 7,
+        (0.5) * height + 0.25,
         z0 + dayOfWeek * 1 / 7
       )
 
@@ -81,7 +107,7 @@ class TrophyModel extends React.Component {
         <mesh key={idx} position={pos}>
           <boxGeometry
             width={1 / 7}
-            height={day.count}
+            height={height}
             depth={1 / 7} />
           <meshStandardMaterial
             color={new THREE.Color(BAR_COLORS[day.level])}
@@ -93,9 +119,9 @@ class TrophyModel extends React.Component {
   }
 
   render () {
-    const width = Math.ceil(this.props.data.length / 7) / 7
+    const width = Math.ceil(this.state.data.length / 7) / 7
     return (
-      <object3D position={new THREE.Vector3(width / 2 + 1 / 14, 0, 3 / 7)}>
+      <object3D position={new THREE.Vector3(-(width / 2) + 3 / 14, 0, 3 / 7)}>
         {this.getBase()}
         {this.getBars()}
         {this.getLabel()}
