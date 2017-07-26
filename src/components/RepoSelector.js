@@ -1,5 +1,5 @@
 import React from 'react'
-import { Segment, Button, Form, Dropdown } from 'semantic-ui-react'
+import { Segment, Button, Form, Dropdown, Header } from 'semantic-ui-react'
 
 const DEFAULT_GITHUB_ENTITY = 'sindresorhus'
 
@@ -27,6 +27,7 @@ export default class RepoSelector extends React.Component {
   render () {
     return (
       <Segment attached='top'>
+        <Header>Generate a Git Trophy</Header>
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
             <Form.Input

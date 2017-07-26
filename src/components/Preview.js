@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 import React3 from 'react-three-renderer'
 import TrophyModel from './TrophyModel'
 import * as THREE from 'three'
+import { connect } from 'react-redux'
+import { Header } from 'semantic-ui-react'
 
 const OrbitControls = require('three-orbit-controls')(require('three'))
 
-export default class Preview extends React.Component {
+class Preview extends React.Component {
   static propTypes = {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired
@@ -73,13 +75,22 @@ export default class Preview extends React.Component {
             <ambientLight color={0xffffff} intensity={0.7} />
 
             <TrophyModel
-              data={data}
-              username={'bcongdon'}
-              year={2016} />
-
+              data={this.props.data}
+              username={this.props.username}
+              year={this.props.year} />
           </scene>
         </React3>
       </div>
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    data: state.data,
+    username: state.username,
+    year: state.year
+  }
+}
+
+export default connect(mapStateToProps)(Preview)

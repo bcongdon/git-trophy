@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import * as THREE from 'three'
 import exportX3DScene from '../x3d-exporter'
 import droidFont from '../../node_modules/three/examples/fonts/droid/droid_sans_regular.typeface.json'
-import axios from 'axios'
 
 const BASE_COLOR = 0xdedede
 const FONT_COLOR = 0x24292e
@@ -19,37 +18,15 @@ const MAX_BAR_Z = 0.8
 
 const BASE_URL = 'http://localhost:5000'
 
-
 class TrophyModel extends React.Component {
   static propTypes = {
     username: PropTypes.string.isRequired,
-    year: PropTypes.number.isRequired
-  }
-
-  constructor (props) {
-    super(props)
-    this.state = {
-      data: []
-    }
-  }
-
-  fetchContributions (username, year) {
-    axios.get(BASE_URL + `/v1/contributions/${username}/${year}`)
-      .then((response) => {
-        this.setState({data: response.data.contributions})
-      })
-  }
-
-  componentWillMount () {
-    this.fetchContributions(this.props.username, this.props.year)
-  }
-
-  componentWillReceiveProps (nextProps) {
-    this.fetchContributions(nextProps.username, nextProps.year)
+    year: PropTypes.string.isRequired,
+    demoMode: PropTypes.bool
   }
 
   getBase () {
-    const width = Math.ceil(this.state.data.length / 7) / 7
+    const width = Math.ceil(this.props.data.length / 7) / 7
     return (
       <mesh position={new THREE.Vector3((width / 2) - 3 / 14, 0, -3 / 7)}>
         <boxGeometry
@@ -65,7 +42,6 @@ class TrophyModel extends React.Component {
   }
 
   getLabel () {
-    const width = Math.ceil(this.state.data.length / 7) / 7
     const truncatedName = (
       this.props.username.length < 23 ? this.props.username : this.props.username.slice(0, 20) + '...'
     )
@@ -89,11 +65,11 @@ class TrophyModel extends React.Component {
     const x0 = -1 / 7
     const z0 = -6 / 7
 
-    const maxCount = this.state.data.reduce((prev, curr) => {
+    const maxCount = this.props.data.reduce((prev, curr) => {
       return curr.count > prev ? curr.count : prev
     }, 0)
 
-    return this.state.data.map((day, idx) => {
+    return this.props.data.map((day, idx) => {
       const week = Math.floor(idx / 7)
       const dayOfWeek = idx % 7
       const height = MAX_BAR_Z * (day.count / maxCount)
@@ -119,14 +95,14 @@ class TrophyModel extends React.Component {
   }
 
   render () {
-    const width = Math.ceil(this.state.data.length / 7) / 7
-    return (
+    const width = Math.ceil(this.props.data.length / 7) / 7
+    return this.props.data ? (
       <object3D position={new THREE.Vector3(-(width / 2) + 3 / 14, 0, 3 / 7)}>
         {this.getBase()}
         {this.getBars()}
         {this.getLabel()}
       </object3D>
-    )
+    ) : null
   }
 }
 
