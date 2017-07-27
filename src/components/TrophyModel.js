@@ -20,7 +20,7 @@ const BASE_URL = 'http://localhost:5000'
 
 class TrophyModel extends React.Component {
   static propTypes = {
-    username: PropTypes.string.isRequired,
+    entity: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
     demoMode: PropTypes.bool
   }
@@ -43,7 +43,7 @@ class TrophyModel extends React.Component {
 
   getLabel () {
     const truncatedName = (
-      this.props.username.length < 23 ? this.props.username : this.props.username.slice(0, 20) + '...'
+      this.props.entity.length < 23 ? this.props.entity : this.props.entity.slice(0, 20) + '...'
     )
 
     return (

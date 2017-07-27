@@ -13,7 +13,7 @@ def do_render(username, year):
     return get_model_data(username, year)
 
 
-@app.route('/v1/model')
+# @app.route('/v1/model')
 def generate_model():
     username = request.args.get('user')
     year = int(request.args.get('year', datetime.now().year - 1))
@@ -21,14 +21,14 @@ def generate_model():
     return Response(x3d_data, mimetype='model/x3d+xml')
 
 
-def get_user_contributions(username, year):
+def get_user_contributions(github_entity, year):
     try:
         contributions = GithubUser(github_entity).contributions(
             start_date='{}-01-01'.format(year),
             end_date='{}-12-31'.format(year)
         )
     except:
-        abort(400, 'unable to get data for user: {}'.format(username))
+        abort(400, 'unable to get data for entity: {}'.format(github_entity))
 
     return [
         dict(day=d.date.isoformat(), count=d.count, level=d.level)

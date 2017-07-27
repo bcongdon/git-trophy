@@ -1,27 +1,37 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Segment, Button, Form, Dropdown, Header } from 'semantic-ui-react'
 
 const DEFAULT_GITHUB_ENTITY = 'sindresorhus'
 
 export default class RepoSelector extends React.Component {
+  static propTypes = {
+    yearOptions: PropTypes.array.isRequired,
+    submitRepoChanges: PropTypes.func.isRequired
+  }
+
   constructor (props) {
     super(props)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDropdownChange = this.handleDropdownChange.bind(this)
+    this.handleEntityChange = this.handleEntityChange.bind(this)
 
     this.state = {
-      githubEntity: DEFAULT_GITHUB_ENTITY,
-      yearOptions: [{text: '2017', value: '2017'}],
-      selectedYear: '2017'
+      githubEntity: 'DEFAULT_GITHUB_ENTITY',
+      selectedYear: this.props.yearOptions ? this.props.yearOptions[0] : null
     }
   }
 
-  handleSubmit (data, foo) {
-
+  handleSubmit () {
+    this.props.submitRepoChanges(this.props.entity, this.props.year)
   }
 
   handleDropdownChange (e, data) {
-    this.setState({selectedYear: data.value})
+    this.props.updateSelectedYear(data.value)
+  }
+
+  handleEntityChange (e, data) {
+    this.props.updateSelectedEntity(data.value)
   }
 
   render () {
@@ -31,7 +41,8 @@ export default class RepoSelector extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <Form.Field>
             <Form.Input
-              defaultValue={DEFAULT_GITHUB_ENTITY}
+              onChange={this.handleEntityChange}
+              value={this.props.entity}
               label='Github Username or Repo'
               placeholder='User / Repo Name' />
           </Form.Field>
@@ -41,14 +52,14 @@ export default class RepoSelector extends React.Component {
               onChange={this.handleDropdownChange}
               fluid
               selection
-              options={this.state.yearOptions}
-              disabled={!this.state.githubEntity}
+              options={this.props.yearOptions}
+              disabled={this.props.entity == ''}
               defaultValue='2017' />
           </Form.Field>
           <Button
             type='submit'
             primary
-            disabled={!(this.state.githubEntity && this.state.selectedYear)}>
+            disabled={!(this.props.entity && this.props.year)}>
               Generate!
           </Button>
         </Form>
