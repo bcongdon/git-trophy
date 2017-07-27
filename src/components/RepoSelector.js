@@ -2,12 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Segment, Button, Form, Dropdown, Header } from 'semantic-ui-react'
 
-const DEFAULT_GITHUB_ENTITY = 'sindresorhus'
-
 export default class RepoSelector extends React.Component {
   static propTypes = {
     yearOptions: PropTypes.array.isRequired,
-    submitRepoChanges: PropTypes.func.isRequired
+    submitRepoChanges: PropTypes.func.isRequired,
+    entity: PropTypes.string.isRequired,
+    year: PropTypes.string.isRequired,
+    updateSelectedYear: PropTypes.func.isRequired,
+    updateSelectedEntity: PropTypes.func.isRequired
+
   }
 
   constructor (props) {
@@ -53,7 +56,7 @@ export default class RepoSelector extends React.Component {
               fluid
               selection
               options={this.props.yearOptions}
-              disabled={this.props.entity == ''}
+              disabled={this.props.entity === ''}
               defaultValue='2017' />
           </Form.Field>
           <Button

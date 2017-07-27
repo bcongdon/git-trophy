@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import * as THREE from 'three'
-import exportX3DScene from '../x3d-exporter'
 import droidFont from '../../node_modules/three/examples/fonts/droid/droid_sans_regular.typeface.json'
 
 const BASE_COLOR = 0xdedede
@@ -16,13 +15,11 @@ const BAR_COLORS = [
 const ROUGHNESS = 0.8
 const MAX_BAR_Z = 0.8
 
-const BASE_URL = 'http://localhost:5000'
-
 class TrophyModel extends React.Component {
   static propTypes = {
     entity: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
-    demoMode: PropTypes.bool
+    data: PropTypes.array.isRequired
   }
 
   getBase () {

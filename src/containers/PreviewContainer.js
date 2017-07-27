@@ -1,10 +1,17 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Segment, Header } from 'semantic-ui-react'
 import ContainerDimensions from 'react-container-dimensions'
 import Preview from '../components/Preview'
 import { connect } from 'react-redux'
 
 export class PreviewContainer extends React.Component {
+  static propTypes = {
+    data: PropTypes.array.isRequired,
+    entity: PropTypes.string.isRequired,
+    year: PropTypes.string.isRequired
+  }
+
   render () {
     return (
       <Segment>

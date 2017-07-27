@@ -2,7 +2,6 @@ import React from 'react'
 import Navbar from './Navbar'
 import PreviewContainer from '../containers/PreviewContainer'
 import RepoSelectorContainer from '../containers/RepoSelectorContainer'
-import ExportPanel from './ExportPanel'
 import { Grid } from 'semantic-ui-react'
 
 export default class App extends React.Component {

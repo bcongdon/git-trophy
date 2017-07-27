@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
   loadContributions,
@@ -8,6 +9,14 @@ import RepoSelector from '../components/RepoSelector'
 import ExportPanel from '../components/ExportPanel'
 
 export class RepoSelectorContainer extends React.Component {
+  static propTypes = {
+    loadContributions: PropTypes.func.isRequired,
+    updateSelectedYear: PropTypes.func.isRequired,
+    updateSelectedEntity: PropTypes.func.isRequired,
+    entity: PropTypes.string.isRequired,
+    year: PropTypes.string.isRequired
+  }
+
   render () {
     return (
       <div>
@@ -37,4 +46,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(null, actions)(RepoSelectorContainer)
+export default connect(mapStateToProps, actions)(RepoSelectorContainer)

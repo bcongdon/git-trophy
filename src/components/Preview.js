@@ -3,14 +3,16 @@ import PropTypes from 'prop-types'
 import React3 from 'react-three-renderer'
 import TrophyModel from './TrophyModel'
 import * as THREE from 'three'
-import { Header } from 'semantic-ui-react'
 
 const OrbitControls = require('three-orbit-controls')(require('three'))
 
 export default class Preview extends React.Component {
   static propTypes = {
     width: PropTypes.number.isRequired,
-    height: PropTypes.number.isRequired
+    height: PropTypes.number.isRequired,
+    data: PropTypes.array.isRequired,
+    entity: PropTypes.string.isRequired,
+    year: PropTypes.string.isRequired
   }
 
   constructor (props) {
