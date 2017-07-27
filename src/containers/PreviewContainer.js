@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Segment, Header } from 'semantic-ui-react'
+import { Segment, Header, Loader } from 'semantic-ui-react'
 import ContainerDimensions from 'react-container-dimensions'
 import Preview from '../components/Preview'
 import { connect } from 'react-redux'
@@ -9,13 +9,21 @@ export class PreviewContainer extends React.Component {
   static propTypes = {
     data: PropTypes.array.isRequired,
     entity: PropTypes.string.isRequired,
-    year: PropTypes.string.isRequired
+    year: PropTypes.string.isRequired,
+    loading: PropTypes.bool
   }
 
   render () {
+    const loader = (
+      <Loader
+        active={this.props.loading}
+        size='small'
+        inline />
+    )
+
     return (
       <Segment>
-        <Header>Preview</Header>
+        <Header style={{height: 26}}>Preview &nbsp;{loader}</Header>
         <ContainerDimensions>
           {({width, height}) => (
             <Preview
@@ -35,7 +43,8 @@ function mapStateToProps (state) {
   return {
     data: state.data,
     entity: state.previewEntity,
-    year: state.previewYear
+    year: state.previewYear,
+    loading: state.loadingContributions
   }
 }
 
