@@ -10,7 +10,7 @@ export class PreviewContainer extends React.Component {
     data: PropTypes.array.isRequired,
     entity: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
-    loading: PropTypes.bool
+    loadingContributions: PropTypes.bool
   }
 
   render () {
@@ -44,7 +44,7 @@ function mapStateToProps (state) {
     data: state.data,
     entity: state.previewEntity,
     year: state.previewYear,
-    loadingContributions: state.loadingContributions,
+    loadingContributions: state.loadingContributions
   }
 }
 

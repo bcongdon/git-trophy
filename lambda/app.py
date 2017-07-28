@@ -47,7 +47,7 @@ def contributions():
     try:
         year = int(request.args.get('year'))
     except:
-        return jsonify(error='invalid year: {}'.format(year)), 400
+        return jsonify(error='invalid year'), 400
 
     if '/' in github_entity:
         # TODO: process repo

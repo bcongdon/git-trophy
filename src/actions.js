@@ -31,13 +31,16 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
   dispatch({type: START_YEARS_UPDATE})
   return axios.get(`${BASE_URL}/v1/years`, { params: {entity} })
     .then((response) => {
-      if(response.status !== 200) {
+      if (response.status !== 200) {
         // TODO: handle error
       } else {
-        dispatch({ type: RECEIVED_YEAR_OPTIONS, years: response.data.years })
+        const years = response.data.years
+        dispatch({ type: RECEIVED_YEAR_OPTIONS, years: years })
+        dispatch({ type: UPDATE_SELECTED_YEAR, year: years[0] })
+        loadContributions(entity, years[0])(dispatch)
       }
     })
-}, 100)
+}, 200)
 
 export const updateSelectedEntity = (entity) => (dispatch) => {
   dispatch({ type: UPDATE_SELECTED_ENTITY, entity })
@@ -47,7 +50,7 @@ export const updateSelectedEntity = (entity) => (dispatch) => {
 export const updateSelectedYear = (year) => (dispatch, getState) => {
   dispatch({ type: UPDATE_SELECTED_YEAR, year })
   dispatch({ type: START_CONTRIBUTION_UPDATE })
-  
+
   const entity = getState().entity
 
   return axios.get(`${BASE_URL}/v1/contributions`, { params: {entity, year} })

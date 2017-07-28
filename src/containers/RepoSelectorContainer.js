@@ -15,6 +15,7 @@ export class RepoSelectorContainer extends React.Component {
     updateSelectedEntity: PropTypes.func.isRequired,
     entity: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
+    yearOptions: PropTypes.array.isRequired,
     loadingYears: PropTypes.bool
   }
 

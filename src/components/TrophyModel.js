@@ -13,7 +13,8 @@ const BAR_COLORS = [
   0x195127
 ]
 const ROUGHNESS = 0.8
-const MAX_BAR_Z = 0.8
+const MAX_BAR_Z = 0.75
+const MIN_BAR_Z = 0.05
 
 class TrophyModel extends React.Component {
   static propTypes = {
@@ -67,9 +68,13 @@ class TrophyModel extends React.Component {
     }, 0)
 
     return this.props.data.map((day, idx) => {
+      if (!day.count) {
+        return null
+      }
+
       const week = Math.floor(idx / 7)
       const dayOfWeek = idx % 7
-      const height = MAX_BAR_Z * (day.count / maxCount)
+      const height = MIN_BAR_Z + (MAX_BAR_Z * (day.count / maxCount))
       const pos = new THREE.Vector3(
         x0 + week * 1 / 7,
         (0.5) * height + 0.25,

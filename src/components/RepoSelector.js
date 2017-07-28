@@ -14,7 +14,6 @@ export default class RepoSelector extends React.Component {
 
   constructor (props) {
     super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
     this.handleDropdownChange = this.handleDropdownChange.bind(this)
     this.handleEntityChange = this.handleEntityChange.bind(this)
 
@@ -22,10 +21,6 @@ export default class RepoSelector extends React.Component {
       githubEntity: 'DEFAULT_GITHUB_ENTITY',
       selectedYear: this.props.yearOptions ? this.props.yearOptions[0] : null
     }
-  }
-
-  handleSubmit () {
-    this.props.submitRepoChanges(this.props.entity, this.props.year)
   }
 
   handleDropdownChange (e, data) {
@@ -40,7 +35,7 @@ export default class RepoSelector extends React.Component {
     return (
       <Segment attached='top'>
         <Header>Generate a Git Trophy</Header>
-        <Form onSubmit={this.handleSubmit}>
+        <Form>
           <Form.Field>
             <Form.Input
               onChange={this.handleEntityChange}
@@ -57,7 +52,7 @@ export default class RepoSelector extends React.Component {
               options={this.props.yearOptions}
               disabled={!this.props.yearOptions}
               loading={this.props.loadingYears}
-              defaultValue='2017' />
+              value={this.props.year} />
           </Form.Field>
         </Form>
       </Segment>
