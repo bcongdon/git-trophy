@@ -1,16 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Segment, Button, Form, Dropdown, Header } from 'semantic-ui-react'
+import { Segment, Form, Dropdown, Header } from 'semantic-ui-react'
 
 export default class RepoSelector extends React.Component {
   static propTypes = {
     yearOptions: PropTypes.array.isRequired,
-    submitRepoChanges: PropTypes.func.isRequired,
     entity: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
     updateSelectedYear: PropTypes.func.isRequired,
-    updateSelectedEntity: PropTypes.func.isRequired
-
+    updateSelectedEntity: PropTypes.func.isRequired,
+    loadingYears: PropTypes.bool
   }
 
   constructor (props) {
@@ -56,15 +55,10 @@ export default class RepoSelector extends React.Component {
               fluid
               selection
               options={this.props.yearOptions}
-              disabled={this.props.entity === ''}
+              disabled={!this.props.yearOptions}
+              loading={this.props.loadingYears}
               defaultValue='2017' />
           </Form.Field>
-          <Button
-            type='submit'
-            primary
-            disabled={!(this.props.entity && this.props.year)}>
-              Generate!
-          </Button>
         </Form>
       </Segment>
     )

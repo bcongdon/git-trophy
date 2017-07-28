@@ -16,7 +16,7 @@ export class PreviewContainer extends React.Component {
   render () {
     const loader = (
       <Loader
-        active={this.props.loading}
+        active={this.props.loadingContributions}
         size='small'
         inline />
     )
@@ -44,7 +44,7 @@ function mapStateToProps (state) {
     data: state.data,
     entity: state.previewEntity,
     year: state.previewYear,
-    loading: state.loadingContributions
+    loadingContributions: state.loadingContributions,
   }
 }
 

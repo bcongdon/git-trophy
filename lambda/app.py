@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import Flask, request, Response, jsonify, abort
 from processify import processify
 from github_contributions import GithubUser
+from scraper import get_github_user_years
 from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
@@ -38,9 +39,9 @@ def get_user_contributions(github_entity, year):
 
 @app.route('/v1/contributions')
 def contributions():
-    try:
-        github_entity = request.args.get('entity')
-    except:
+    github_entity = request.args.get('entity')
+
+    if not github_entity:
         return jsonify(error='must provide entity'), 400
 
     try:
@@ -63,8 +64,21 @@ def contributions():
 
 
 @app.route('/v1/years')
-def years(username):
-    pass
+def years():
+    github_entity = request.args.get('entity')
+
+    if not github_entity:
+        return jsonify(error='must provide entity'), 400
+
+    if '/' in github_entity:
+        # TODO: Process repo
+        years = []
+    else:
+        try:
+            years = get_github_user_years(github_entity)
+        except:
+            return jsonify(error='unable to get years'), 400
+    return jsonify(years=years)
 
 
 @app.errorhandler(400)
