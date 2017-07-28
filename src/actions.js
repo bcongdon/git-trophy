@@ -36,18 +36,31 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
       } else {
         const years = response.data.years
         dispatch({ type: RECEIVED_YEAR_OPTIONS, years: years })
-        dispatch({ type: UPDATE_SELECTED_YEAR, year: years[0] })
-        loadContributions(entity, years[0])(dispatch)
+
+        if (years) {
+          const previousYear = (new Date().getFullYear() - 1).toString()
+          const defaultYear = years.includes(previousYear) ? previousYear : years[0]
+          dispatch({ type: UPDATE_SELECTED_YEAR, year: defaultYear })
+          loadContributions(entity, defaultYear)(dispatch)
+        }
       }
     })
 }, 200)
 
-export const updateSelectedEntity = (entity) => (dispatch) => {
+export const updateSelectedEntity = (entity) => (dispatch, getState) => {
+  if (entity === getState().entity) {
+    return
+  }
+
   dispatch({ type: UPDATE_SELECTED_ENTITY, entity })
   return debouncedYearOptionsFetch(dispatch, entity)
 }
 
 export const updateSelectedYear = (year) => (dispatch, getState) => {
+  if (year === getState().year) {
+    return
+  }
+
   dispatch({ type: UPDATE_SELECTED_YEAR, year })
   dispatch({ type: START_CONTRIBUTION_UPDATE })
 
