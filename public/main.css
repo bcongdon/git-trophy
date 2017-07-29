@@ -1,0 +1,9 @@
+.copy-test-input {
+    width: 84%;
+}
+
+@media (max-width: 500px) {
+  .copy-test-input {
+      width: 75%;
+  }
+}

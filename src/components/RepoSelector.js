@@ -35,7 +35,7 @@ export default class RepoSelector extends React.Component {
     return (
       <Segment attached='top'>
         <Header>Generate a Git Trophy</Header>
-        <Form>
+        <Form size='large'>
           <Form.Field>
             <Form.Input
               onChange={this.handleEntityChange}

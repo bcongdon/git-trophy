@@ -18,8 +18,15 @@ export default class Preview extends React.Component {
   constructor (props) {
     super(props)
 
+    const { width } = this.props
+    let position
+    if (width > 500) {
+      position = new THREE.Vector3(1, 2, 5)
+    } else {
+      position = new THREE.Vector3(1, 3, 8)
+    }
     this.state = {
-      cameraPosition: new THREE.Vector3(1, 2, 5)
+      cameraPosition: position
     }
   }
 
