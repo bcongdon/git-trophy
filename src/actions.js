@@ -5,8 +5,13 @@ import {
   RECEIVED_YEAR_OPTIONS,
   START_CONTRIBUTION_UPDATE,
   START_YEARS_UPDATE,
+  START_DOWNLOAD_LOAD,
+  FINISHED_DOWNLOAD_LOAD,
   UPDATE_SELECTED_YEAR,
-  UPDATE_SELECTED_ENTITY } from './types'
+  UPDATE_SELECTED_ENTITY,
+  UPDATE_SCENE_CONTAINER } from './types'
+import exportSceneX3D from './x3d-exporter'
+import download from 'downloadjs'
 
 const BASE_URL = 'http://localhost:5000'
 
@@ -79,4 +84,22 @@ export const updateSelectedYear = (year) => (dispatch, getState) => {
         })
       }
     })
+}
+
+export const setSceneContainer = (container) => {
+  return {type: UPDATE_SCENE_CONTAINER, container}
+}
+
+export const downloadModel = () => (dispatch, getState) => {
+  dispatch({type: START_DOWNLOAD_LOAD})
+  const { container, entity, year } = getState()
+  const scene = container.refs.preview.refs.scene
+  const fileName = `${entity.replace('/', '-')}-${year}.x3d`
+
+  // Yield control to the renderer
+  return setTimeout(() => {
+    const x3dData = exportSceneX3D(scene)
+    download(x3dData, fileName, 'model/x3d+xml')
+    dispatch({type: FINISHED_DOWNLOAD_LOAD})
+  }, 5)
 }

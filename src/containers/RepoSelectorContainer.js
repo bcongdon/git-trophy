@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import {
   loadContributions,
   updateSelectedYear,
-  updateSelectedEntity } from '../actions'
+  updateSelectedEntity,
+  downloadModel } from '../actions'
 import RepoSelector from '../components/RepoSelector'
 import ExportPanel from '../components/ExportPanel'
 
@@ -13,6 +14,7 @@ export class RepoSelectorContainer extends React.Component {
     loadContributions: PropTypes.func.isRequired,
     updateSelectedYear: PropTypes.func.isRequired,
     updateSelectedEntity: PropTypes.func.isRequired,
+    downloadModel: PropTypes.func.isRequired,
     entity: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
     yearOptions: PropTypes.array.isRequired,
@@ -33,7 +35,9 @@ export class RepoSelectorContainer extends React.Component {
           year={this.props.year}
           yearOptions={yearOptions}
           loadingYears={this.props.loadingYears} />
-        <ExportPanel />
+        <ExportPanel
+          onDownloadClick={this.props.downloadModel}
+          loadingDownload={this.props.loadingDownload}/>
       </div>
     )
   }
@@ -42,7 +46,8 @@ export class RepoSelectorContainer extends React.Component {
 const actions = {
   loadContributions,
   updateSelectedYear,
-  updateSelectedEntity
+  updateSelectedEntity,
+  downloadModel
 }
 
 function mapStateToProps (state) {
@@ -50,7 +55,8 @@ function mapStateToProps (state) {
     entity: state.entity,
     year: state.year,
     yearOptions: state.yearOptions,
-    loadingYears: state.loadingYears
+    loadingYears: state.loadingYears,
+    loadingDownload: state.loadingDownload
   }
 }
 

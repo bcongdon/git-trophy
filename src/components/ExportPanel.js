@@ -6,9 +6,17 @@ export default class ExportPanel extends React.Component {
     return (
       <Segment attached='bottom'>
         <Button.Group size='large' fluid>
-          <Button icon='download' content='Download' />
+          <Button
+            icon='download'
+            content='Download'
+            onClick={this.props.onDownloadClick}
+            loading={this.props.loadingDownload} />
           <Button.Or />
-          <Button content='To Shapeways' primary />
+          <Button
+            icon='share'
+            content='Shapeways'
+            primary
+            onClick={this.props.onExportClick} />
         </Button.Group>
       </Segment>
     )

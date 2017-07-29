@@ -63,7 +63,7 @@ export default class Preview extends React.Component {
     return (
       <div style={{cursor: 'move'}} ref='container'>
         <React3 onAnimate={this.onAnimate} antialias mainCamera='maincamera' width={width} height={height} clearColor={0xffffff}>
-          <scene>
+          <scene ref='scene'>
 
             <perspectiveCamera ref='camera' name='maincamera' {...cameraprops} />
 
