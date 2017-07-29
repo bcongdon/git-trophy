@@ -11,7 +11,8 @@ export class PreviewContainer extends React.Component {
     data: PropTypes.array.isRequired,
     entity: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
-    loadingContributions: PropTypes.bool
+    loadingContributions: PropTypes.bool,
+    setSceneContainer: PropTypes.func.isRequired
   }
 
   render () {

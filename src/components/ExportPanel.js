@@ -1,7 +1,14 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Segment, Button } from 'semantic-ui-react'
 
 export default class ExportPanel extends React.Component {
+  static propTypes = {
+    onDownloadClick: PropTypes.func.isRequired,
+    loadingDownload: PropTypes.bool,
+    onExportClick: PropTypes.func.isRequired
+  }
+
   render () {
     return (
       <Segment attached='bottom'>

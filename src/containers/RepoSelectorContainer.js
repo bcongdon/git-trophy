@@ -12,6 +12,7 @@ import ExportPanel from '../components/ExportPanel'
 export class RepoSelectorContainer extends React.Component {
   static propTypes = {
     loadContributions: PropTypes.func.isRequired,
+    loadingDownload: PropTypes.bool,
     updateSelectedYear: PropTypes.func.isRequired,
     updateSelectedEntity: PropTypes.func.isRequired,
     downloadModel: PropTypes.func.isRequired,
@@ -37,7 +38,7 @@ export class RepoSelectorContainer extends React.Component {
           loadingYears={this.props.loadingYears} />
         <ExportPanel
           onDownloadClick={this.props.downloadModel}
-          loadingDownload={this.props.loadingDownload}/>
+          loadingDownload={this.props.loadingDownload} />
       </div>
     )
   }
