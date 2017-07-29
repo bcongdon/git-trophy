@@ -6,6 +6,8 @@ import {
   START_CONTRIBUTION_UPDATE,
   START_YEARS_UPDATE,
   START_DOWNLOAD_LOAD,
+  START_EXPORT_LOAD,
+  FINISHED_EXPORT_LOAD,
   FINISHED_DOWNLOAD_LOAD,
   UPDATE_SELECTED_YEAR,
   UPDATE_SELECTED_ENTITY,
@@ -101,5 +103,17 @@ export const downloadModel = () => (dispatch, getState) => {
     const x3dData = exportSceneX3D(scene)
     download(x3dData, fileName, 'model/x3d+xml')
     dispatch({type: FINISHED_DOWNLOAD_LOAD})
+  }, 5)
+}
+
+export const exportModel = () => (dispatch, getState) => {
+  dispatch({type: START_EXPORT_LOAD})
+  const { container, entity, year } = getState()
+  const scene = container.refs.preview.refs.scene
+
+  // Yield control to the renderer
+  return setTimeout(() => {
+    const x3dData = exportSceneX3D(scene)
+    dispatch({type: FINISHED_EXPORT_LOAD})
   }, 5)
 }

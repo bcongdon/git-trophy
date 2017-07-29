@@ -6,7 +6,9 @@ import {
   START_CONTRIBUTION_UPDATE,
   START_YEARS_UPDATE,
   START_DOWNLOAD_LOAD,
+  START_EXPORT_LOAD,
   FINISHED_DOWNLOAD_LOAD,
+  FINISHED_EXPORT_LOAD,
   UPDATE_SELECTED_YEAR,
   UPDATE_SELECTED_ENTITY,
   UPDATE_SCENE_CONTAINER } from './types'
@@ -19,13 +21,13 @@ const INITIAL_STATE = {
   loadingContributions: false,
   loadingYears: false,
   loadingDownload: false,
+  loadingExport: false,
   previewEntity: dummyData.username,
   previewYear: dummyData.year,
   container: null
 }
 
 export default function (state = INITIAL_STATE, action) {
-  console.log(action)
   switch (action.type) {
     case RECEIVED_CONTRIBUTION_DATA:
       return {
@@ -43,6 +45,10 @@ export default function (state = INITIAL_STATE, action) {
       return {...state, loadingYears: true}
     case START_DOWNLOAD_LOAD:
       return {...state, loadingDownload: true}
+    case START_EXPORT_LOAD:
+      return {...state, loadingExport: true}
+    case FINISHED_EXPORT_LOAD:
+      return {...state, loadingExport: false}
     case FINISHED_DOWNLOAD_LOAD:
       return {...state, loadingDownload: false}
     case UPDATE_SELECTED_YEAR:

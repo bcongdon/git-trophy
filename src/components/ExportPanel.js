@@ -6,6 +6,7 @@ export default class ExportPanel extends React.Component {
   static propTypes = {
     onDownloadClick: PropTypes.func.isRequired,
     loadingDownload: PropTypes.bool,
+    loadingExport: PropTypes.bool,
     onExportClick: PropTypes.func.isRequired
   }
 
@@ -23,7 +24,8 @@ export default class ExportPanel extends React.Component {
             icon='share'
             content='Shapeways'
             primary
-            onClick={this.props.onExportClick} />
+            onClick={this.props.onExportClick}
+            loading={this.props.loadingExport} />
         </Button.Group>
       </Segment>
     )

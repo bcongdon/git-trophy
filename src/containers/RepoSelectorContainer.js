@@ -5,7 +5,8 @@ import {
   loadContributions,
   updateSelectedYear,
   updateSelectedEntity,
-  downloadModel } from '../actions'
+  downloadModel,
+  exportModel } from '../actions'
 import RepoSelector from '../components/RepoSelector'
 import ExportPanel from '../components/ExportPanel'
 
@@ -19,7 +20,9 @@ export class RepoSelectorContainer extends React.Component {
     entity: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
     yearOptions: PropTypes.array.isRequired,
-    loadingYears: PropTypes.bool
+    loadingYears: PropTypes.bool,
+    loadingExport: PropTypes.bool,
+    exportModel: PropTypes.func.isRequired
   }
 
   render () {
@@ -38,7 +41,9 @@ export class RepoSelectorContainer extends React.Component {
           loadingYears={this.props.loadingYears} />
         <ExportPanel
           onDownloadClick={this.props.downloadModel}
-          loadingDownload={this.props.loadingDownload} />
+          onExportClick={this.props.exportModel}
+          loadingDownload={this.props.loadingDownload}
+          loadingExport={this.props.loadingExport} />
       </div>
     )
   }
@@ -48,7 +53,8 @@ const actions = {
   loadContributions,
   updateSelectedYear,
   updateSelectedEntity,
-  downloadModel
+  downloadModel,
+  exportModel
 }
 
 function mapStateToProps (state) {
@@ -57,7 +63,8 @@ function mapStateToProps (state) {
     year: state.year,
     yearOptions: state.yearOptions,
     loadingYears: state.loadingYears,
-    loadingDownload: state.loadingDownload
+    loadingDownload: state.loadingDownload,
+    loadingExport: state.loadingExport
   }
 }
 
