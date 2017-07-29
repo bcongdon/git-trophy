@@ -60,10 +60,10 @@ export class PreviewContainer extends React.Component {
 
 function mapStateToProps (state) {
   return {
-    data: state.data,
-    entity: state.previewEntity,
-    year: state.previewYear,
-    loadingContributions: state.loadingContributions
+    data: state.app.data,
+    entity: state.app.previewEntity,
+    year: state.app.previewYear,
+    loadingContributions: state.app.loadingContributions
   }
 }
 

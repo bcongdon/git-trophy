@@ -5,8 +5,16 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import reduxThunk from 'redux-thunk'
 import reducers from './reducers'
+import { authMiddleware } from 'redux-implicit-oauth2'
+import { createLogger } from 'redux-logger'
 
-const store = applyMiddleware(reduxThunk)(createStore)(reducers)
+const middleware = [reduxThunk, authMiddleware]
+
+if(process.env.NODE_ENV !== 'production') {
+  middleware.push(createLogger())
+}
+
+const store = applyMiddleware(...middleware)(createStore)(reducers)
 
 ReactDOM.render(
   <Provider store={store}>

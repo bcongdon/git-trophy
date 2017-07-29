@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime
 from flask import Flask, request, Response, jsonify, abort
 from processify import processify
 from github_contributions import GithubUser

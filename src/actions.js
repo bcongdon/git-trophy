@@ -7,13 +7,17 @@ import {
   START_YEARS_UPDATE,
   START_DOWNLOAD_LOAD,
   START_EXPORT_LOAD,
+  START_AUTHENTICATION,
   FINISHED_EXPORT_LOAD,
   FINISHED_DOWNLOAD_LOAD,
+  FINISHED_AUTHENTICATION,
   UPDATE_SELECTED_YEAR,
   UPDATE_SELECTED_ENTITY,
   UPDATE_SCENE_CONTAINER } from './types'
 import exportSceneX3D from './x3d-exporter'
 import download from 'downloadjs'
+import authConfig from './oauth'
+import { login } from 'redux-implicit-oauth2'
 
 const BASE_URL = 'http://localhost:5000'
 
@@ -55,7 +59,7 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
 }, 200)
 
 export const updateSelectedEntity = (entity) => (dispatch, getState) => {
-  if (entity === getState().entity) {
+  if (entity === getState().app.entity) {
     return
   }
 
@@ -64,14 +68,14 @@ export const updateSelectedEntity = (entity) => (dispatch, getState) => {
 }
 
 export const updateSelectedYear = (year) => (dispatch, getState) => {
-  if (year === getState().year) {
+  if (year === getState().app.year) {
     return
   }
 
   dispatch({ type: UPDATE_SELECTED_YEAR, year })
   dispatch({ type: START_CONTRIBUTION_UPDATE })
 
-  const entity = getState().entity
+  const entity = getState().app.entity
 
   return axios.get(`${BASE_URL}/v1/contributions`, { params: {entity, year} })
     .then((response) => {
@@ -94,7 +98,7 @@ export const setSceneContainer = (container) => {
 
 export const downloadModel = () => (dispatch, getState) => {
   dispatch({type: START_DOWNLOAD_LOAD})
-  const { container, entity, year } = getState()
+  const { container, entity, year } = getState().app
   const scene = container.refs.preview.refs.scene
   const fileName = `${entity.replace('/', '-')}-${year}.x3d`
 
@@ -108,7 +112,14 @@ export const downloadModel = () => (dispatch, getState) => {
 
 export const exportModel = () => (dispatch, getState) => {
   dispatch({type: START_EXPORT_LOAD})
-  const { container, entity, year } = getState()
+  if(!getState().auth.isLoggedIn) {
+    dispatch({type: START_AUTHENTICATION})
+    dispatch(login(authConfig))
+    return;
+  }
+  dispatch({type: FINISHED_AUTHENTICATION})
+
+  const { container, entity, year } = getState().app
   const scene = container.refs.preview.refs.scene
 
   // Yield control to the renderer

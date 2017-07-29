@@ -22,13 +22,15 @@ export class RepoSelectorContainer extends React.Component {
     yearOptions: PropTypes.array.isRequired,
     loadingYears: PropTypes.bool,
     loadingExport: PropTypes.bool,
-    exportModel: PropTypes.func.isRequired
+    exportModel: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool
   }
 
   render () {
     const yearOptions = this.props.yearOptions.map((year) => {
       return {value: year, text: year}
     })
+
     return (
       <div>
         <RepoSelector
@@ -47,6 +49,21 @@ export class RepoSelectorContainer extends React.Component {
       </div>
     )
   }
+
+  componentDidUpdate () {
+    this.checkAuthCallback()
+  }
+
+  componentDidMount () {
+    this.checkAuthCallback()
+  }
+
+  checkAuthCallback () {
+    // Check to see if auth callback has occurred
+    if(this.props.loadingExport && this.props.authenticating && this.props.isLoggedIn) {
+      this.props.exportModel()
+    }
+  }
 }
 
 const actions = {
@@ -59,12 +76,14 @@ const actions = {
 
 function mapStateToProps (state) {
   return {
-    entity: state.entity,
-    year: state.year,
-    yearOptions: state.yearOptions,
-    loadingYears: state.loadingYears,
-    loadingDownload: state.loadingDownload,
-    loadingExport: state.loadingExport
+    entity: state.app.entity,
+    year: state.app.year,
+    yearOptions: state.app.yearOptions,
+    loadingYears: state.app.loadingYears,
+    loadingDownload: state.app.loadingDownload,
+    loadingExport: state.app.loadingExport,
+    isLoggedIn: state.auth.isLoggedIn,
+    authenticating: state.app.authenticating
   }
 }
 
