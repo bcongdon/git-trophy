@@ -11,11 +11,11 @@ export default class App extends React.Component {
         <Navbar />
         <Grid style={{maxWidth: 1200, margin: '0 auto'}}>
 
-          <Grid.Column mobile={16} tablet={16} computer={5}>
+          <Grid.Column mobile={16} tablet={16} computer={6}>
             <RepoSelectorContainer />
           </Grid.Column>
 
-          <Grid.Column mobile={16} tablet={16} computer={11}>
+          <Grid.Column mobile={16} tablet={16} computer={10}>
             <PreviewContainer />
           </Grid.Column>
 

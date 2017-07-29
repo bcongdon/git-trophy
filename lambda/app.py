@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from flask import Flask, request, Response, jsonify, abort
 from processify import processify
 from github_contributions import GithubUser
@@ -25,14 +25,17 @@ def generate_model():
 def get_user_contributions(github_entity, year):
     try:
         contributions = GithubUser(github_entity).contributions(
-            start_date='{}-01-01'.format(year),
             end_date='{}-12-31'.format(year)
         )
     except:
         abort(400, 'unable to get data for entity: {}'.format(github_entity))
 
     return [
-        dict(day=d.date.isoformat(), count=d.count, level=d.level)
+        dict(
+            day=d.date.isoformat(),
+            count=d.count,
+            level=d.level
+        )
         for d in contributions.days
     ]
 
