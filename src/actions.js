@@ -120,11 +120,36 @@ export const exportModel = () => (dispatch, getState) => {
   dispatch({type: FINISHED_AUTHENTICATION})
 
   const { container, entity, year } = getState().app
-  const scene = container.refs.preview.refs.scene
 
   // Yield control to the renderer
-  return setTimeout(() => {
+  return new Promise((resolve, reject) => {
+    const scene = container.refs.preview.refs.scene
     const x3dData = exportSceneX3D(scene)
-    dispatch({type: FINISHED_EXPORT_LOAD})
-  }, 5)
+
+    const { token } = getState().auth
+
+    const payload = {
+      file: new Buffer(x3dData).toString('base64'), 
+      fileName: `${entity.replace('/', '-')}-${year}.x3d`,
+      uploadScale: 0.022352, // 88% of 1 inch
+      hasRightsToModel: true,
+      acceptTermsAndConditions: true, 
+      title: `Git Trophy - ${entity} (${year})`
+    }
+
+    axios.post('https://api.shapeways.com/model/v1', payload,
+      {headers: {'Authorization': 'Bearer ' + token}}
+    ).then((response) => {
+      window.location = response.data.urls.editModelUrl.address
+      dispatch({type: FINISHED_EXPORT_LOAD})
+      resolve()
+    }).catch((err) => {
+      if(process.env.NODE_ENV !== 'production') {
+        console.log(err)
+        console.log(err.response)
+      }
+      dispatch({type: FINISHED_EXPORT_LOAD})
+      reject(err)
+    })
+  })
 }
