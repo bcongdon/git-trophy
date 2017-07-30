@@ -45,7 +45,9 @@ export class RepoSelectorContainer extends React.Component {
           onDownloadClick={this.props.downloadModel}
           onExportClick={this.props.exportModel}
           loadingDownload={this.props.loadingDownload}
-          loadingExport={this.props.loadingExport} />
+          loadingExport={this.props.loadingExport}
+          year={this.props.year}
+          entity={this.props.entity} />
       </div>
     )
   }

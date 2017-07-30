@@ -1,13 +1,29 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Segment, Button, Form, Divider, Grid, Input } from 'semantic-ui-react'
+import { Segment, Button, Form, Divider, Grid, Input, Popup } from 'semantic-ui-react'
 
 export default class ExportPanel extends React.Component {
   static propTypes = {
     onDownloadClick: PropTypes.func.isRequired,
     loadingDownload: PropTypes.bool,
     loadingExport: PropTypes.bool,
-    onExportClick: PropTypes.func.isRequired
+    onExportClick: PropTypes.func.isRequired,
+    entity: PropTypes.string,
+    year: PropTypes.string
+  }
+
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      showCopyPopup: false
+    }
+
+    this.onCopyClick = this.onCopyClick.bind(this)
+  }
+
+  getURL () {
+    return `${window.location.origin}?entity=${this.props.entity}&year=${this.props.year}`
   }
 
   getButtonGroup (size) {
@@ -29,7 +45,23 @@ export default class ExportPanel extends React.Component {
     )
   }
 
+  onCopyClick () {
+    this.copyInput.inputRef.select()
+    document.execCommand('copy')
+    this.setState({showCopyPopup: true})
+    setTimeout(() => {
+      this.setState({showCopyPopup: false})
+    }, 1000)
+  }
+
   render () {
+    const copyButton = (
+      <Button
+        size='mini'
+        content='Copy'
+        onClick={this.onCopyClick} />
+    )
+
     return (
       <Segment attached='bottom'>
         <Grid>
@@ -44,11 +76,15 @@ export default class ExportPanel extends React.Component {
         <Form size='small'>
           <Form.Group>
             <Input
-              onChange={this.handleEntityChange}
-              value={'http://google.com'}
+              value={this.getURL()}
               style={{paddingRight: '1rem', paddingLeft: '0.5rem'}}
-              className={'copy-test-input'} />
-            <Button size='mini' content='Copy'/>
+              className='copy-test-input'
+              ref={(el) => this.copyInput = el} />
+            <Popup
+              inverted
+              open={this.state.showCopyPopup}
+              trigger={copyButton}
+              content='Copied!' />
           </Form.Group>
         </Form>
       </Segment>
