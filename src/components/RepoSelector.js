@@ -41,7 +41,8 @@ export default class RepoSelector extends React.Component {
               onChange={this.handleEntityChange}
               value={this.props.entity}
               label='Github Username or Repo'
-              placeholder='User / Repo Name' />
+              placeholder='User / Repo Name'
+              error={this.props.erroredEntity} />
           </Form.Field>
           <Form.Field>
             <label>Year</label>
@@ -50,7 +51,7 @@ export default class RepoSelector extends React.Component {
               fluid
               selection
               options={this.props.yearOptions}
-              disabled={!this.props.yearOptions}
+              disabled={!this.props.yearOptions || !this.props.yearOptions.length}
               loading={this.props.loadingYears}
               value={this.props.year} />
           </Form.Field>

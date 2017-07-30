@@ -40,7 +40,8 @@ export class RepoSelectorContainer extends React.Component {
           entity={this.props.entity}
           year={this.props.year}
           yearOptions={yearOptions}
-          loadingYears={this.props.loadingYears} />
+          loadingYears={this.props.loadingYears}
+          erroredEntity={this.props.erroredEntity} />
         <ExportPanel
           onDownloadClick={this.props.downloadModel}
           onExportClick={this.props.exportModel}
@@ -85,7 +86,8 @@ function mapStateToProps (state) {
     loadingDownload: state.app.loadingDownload,
     loadingExport: state.app.loadingExport,
     isLoggedIn: state.auth.isLoggedIn,
-    authenticating: state.app.authenticating
+    authenticating: state.app.authenticating,
+    erroredEntity: state.app.erroredEntity
   }
 }
 

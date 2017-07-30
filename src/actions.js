@@ -13,13 +13,15 @@ import {
   FINISHED_AUTHENTICATION,
   UPDATE_SELECTED_YEAR,
   UPDATE_SELECTED_ENTITY,
-  UPDATE_SCENE_CONTAINER } from './types'
+  UPDATE_SCENE_CONTAINER,
+  ERRORED_YEAR_FETCH,
+  ERRORED_CONTRIBUTIONS_FETCH } from './types'
 import exportSceneX3D from './x3d-exporter'
 import download from 'downloadjs'
 import authConfig from './oauth'
 import { login } from 'redux-implicit-oauth2'
 
-const BASE_URL = 'http://localhost:5000'
+const BASE_URL = 'http://08ab6eb8.ngrok.io'
 
 export const loadContributions = (entity, year) => (dispatch) => {
   dispatch({ type: START_CONTRIBUTION_UPDATE })
@@ -39,6 +41,10 @@ export const loadContributions = (entity, year) => (dispatch) => {
 }
 
 const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
+  if(!entity) {
+    return
+  }
+
   dispatch({type: START_YEARS_UPDATE})
   return axios.get(`${BASE_URL}/v1/years`, { params: {entity} })
     .then((response) => {
@@ -55,6 +61,9 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
           loadContributions(entity, defaultYear)(dispatch)
         }
       }
+    })
+    .catch((err) => {
+      dispatch({type: ERRORED_YEAR_FETCH})
     })
 }, 200)
 
@@ -82,6 +91,9 @@ export const fetchContributionsData = (entity, year) => (dispatch) => {
           year: year
         })
       }
+    })
+    .catch((err) => {
+      dispatch({type: ERRORED_CONTRIBUTIONS_FETCH})
     })
 }
 
