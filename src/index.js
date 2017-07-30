@@ -7,7 +7,8 @@ import reduxThunk from 'redux-thunk'
 import reducers from './reducers'
 import { authMiddleware } from 'redux-implicit-oauth2'
 import { createLogger } from 'redux-logger'
-import { fetchContributionsData } from './actions'
+import { updateSelectedEntity } from './actions'
+import { UPDATE_SELECTED_YEAR } from './types'
 
 const middleware = [reduxThunk, authMiddleware]
 
@@ -17,12 +18,14 @@ if (process.env.NODE_ENV !== 'production') {
 
 const store = applyMiddleware(...middleware)(createStore)(reducers)
 
+// Pull in initial state from querystring arguments
 const urlParams = new URLSearchParams(window.location.search)
 if (urlParams.get('entity') && urlParams.get('year')) {
   const year = urlParams.get('year')
   const entity = urlParams.get('entity')
   if (parseInt(year) && entity) {
-    fetchContributionsData(entity, year)(store.dispatch)
+    store.dispatch({type: UPDATE_SELECTED_YEAR, year})
+    updateSelectedEntity(entity)(store.dispatch, store.getState)
   }
 }
 

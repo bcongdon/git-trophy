@@ -7,7 +7,6 @@ import {
   START_YEARS_UPDATE,
   START_DOWNLOAD_LOAD,
   START_EXPORT_LOAD,
-  START_AUTHENTICATION,
   FINISHED_EXPORT_LOAD,
   FINISHED_DOWNLOAD_LOAD,
   UPDATE_SELECTED_YEAR,
@@ -39,7 +38,7 @@ export const loadContributions = (entity, year) => (dispatch) => {
     })
 }
 
-const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
+const debouncedYearOptionsFetch = debounce((dispatch, entity, year) => {
   if (!entity) {
     return
   }
@@ -55,7 +54,14 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
 
         if (years) {
           const previousYear = (new Date().getFullYear() - 1).toString()
-          const defaultYear = years.includes(previousYear) ? previousYear : years[0]
+          let defaultYear
+          if (year && years.includes(year)) {
+            defaultYear = year
+          } else if (years.includes(previousYear)) {
+            defaultYear = previousYear
+          } else {
+            defaultYear = years[0]
+          }
           dispatch({ type: UPDATE_SELECTED_YEAR, year: defaultYear })
           loadContributions(entity, defaultYear)(dispatch)
         }
@@ -73,7 +79,8 @@ export const updateSelectedEntity = (entity) => (dispatch, getState) => {
   }
 
   dispatch({ type: UPDATE_SELECTED_ENTITY, entity })
-  return debouncedYearOptionsFetch(dispatch, entity)
+  const { year } = getState().app
+  return debouncedYearOptionsFetch(dispatch, entity, year)
 }
 
 export const fetchContributionsData = (entity, year) => (dispatch) => {
