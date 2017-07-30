@@ -46,7 +46,7 @@ export default function (state = INITIAL_STATE, action) {
       }
     case RECEIVED_YEAR_OPTIONS:
       return {...state, yearOptions: action.years, loadingYears: false}
-    
+
     // Trigger updates
     case START_CONTRIBUTION_UPDATE:
       return {...state, loadingContributions: true}

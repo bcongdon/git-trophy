@@ -11,7 +11,7 @@ import { fetchContributionsData } from './actions'
 
 const middleware = [reduxThunk, authMiddleware]
 
-if(process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
 
@@ -21,7 +21,7 @@ const urlParams = new URLSearchParams(window.location.search)
 if (urlParams.get('entity') && urlParams.get('year')) {
   const year = urlParams.get('year')
   const entity = urlParams.get('entity')
-  if(parseInt(year) && entity) {
+  if (parseInt(year) && entity) {
     fetchContributionsData(entity, year)(store.dispatch)
   }
 }

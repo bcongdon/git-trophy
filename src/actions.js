@@ -41,7 +41,7 @@ export const loadContributions = (entity, year) => (dispatch) => {
 }
 
 const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
-  if(!entity) {
+  if (!entity) {
     return
   }
 
@@ -62,7 +62,7 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
         }
       }
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch({type: ERRORED_YEAR_FETCH})
     })
 }, 200)
@@ -92,7 +92,7 @@ export const fetchContributionsData = (entity, year) => (dispatch) => {
         })
       }
     })
-    .catch((err) => {
+    .catch(() => {
       dispatch({type: ERRORED_CONTRIBUTIONS_FETCH})
     })
 }
@@ -127,10 +127,10 @@ export const downloadModel = () => (dispatch, getState) => {
 
 export const exportModel = () => (dispatch, getState) => {
   dispatch({type: START_EXPORT_LOAD})
-  if(!getState().auth.isLoggedIn) {
+  if (!getState().auth.isLoggedIn) {
     dispatch({type: START_AUTHENTICATION})
     dispatch(login(authConfig))
-    return;
+    return
   }
   dispatch({type: FINISHED_AUTHENTICATION})
 
@@ -144,11 +144,11 @@ export const exportModel = () => (dispatch, getState) => {
     const { token } = getState().auth
 
     const payload = {
-      file: new Buffer(x3dData).toString('base64'), 
+      file: Buffer.from(x3dData).toString('base64'),
       fileName: `${entity.replace('/', '-')}-${year}.x3d`,
       uploadScale: 0.022352, // 88% of 1 inch
       hasRightsToModel: true,
-      acceptTermsAndConditions: true, 
+      acceptTermsAndConditions: true,
       title: `Git Trophy - ${entity} (${year})`
     }
 
@@ -159,7 +159,7 @@ export const exportModel = () => (dispatch, getState) => {
       dispatch({type: FINISHED_EXPORT_LOAD})
       resolve()
     }).catch((err) => {
-      if(process.env.NODE_ENV !== 'production') {
+      if (process.env.NODE_ENV !== 'production') {
         console.log(err)
         console.log(err.response)
       }

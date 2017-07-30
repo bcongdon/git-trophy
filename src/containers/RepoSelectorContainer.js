@@ -23,7 +23,9 @@ export class RepoSelectorContainer extends React.Component {
     loadingYears: PropTypes.bool,
     loadingExport: PropTypes.bool,
     exportModel: PropTypes.func.isRequired,
-    isLoggedIn: PropTypes.bool
+    isLoggedIn: PropTypes.bool,
+    erroredEntity: PropTypes.bool,
+    authenticating: PropTypes.bool
   }
 
   render () {
@@ -63,7 +65,7 @@ export class RepoSelectorContainer extends React.Component {
 
   checkAuthCallback () {
     // Check to see if auth callback has occurred
-    if(this.props.loadingExport && this.props.authenticating && this.props.isLoggedIn) {
+    if (this.props.loadingExport && this.props.authenticating && this.props.isLoggedIn) {
       this.props.exportModel()
     }
   }

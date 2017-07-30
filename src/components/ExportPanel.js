@@ -72,14 +72,14 @@ export default class ExportPanel extends React.Component {
             {this.getButtonGroup('large')}
           </Grid.Row>
         </Grid>
-        <Divider section fitted style={{marginTop: '1rem', marginBottom: '0.75rem'}}/>
+        <Divider section fitted style={{marginTop: '1rem', marginBottom: '0.75rem'}} />
         <Form size='small'>
           <Form.Group>
             <Input
               value={this.getURL()}
               style={{paddingRight: '1rem', paddingLeft: '0.5rem'}}
               className='copy-test-input'
-              ref={(el) => this.copyInput = el} />
+              ref={(el) => { this.copyInput = el }} />
             <Popup
               inverted
               open={this.state.showCopyPopup}

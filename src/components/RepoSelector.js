@@ -9,7 +9,8 @@ export default class RepoSelector extends React.Component {
     year: PropTypes.string.isRequired,
     updateSelectedYear: PropTypes.func.isRequired,
     updateSelectedEntity: PropTypes.func.isRequired,
-    loadingYears: PropTypes.bool
+    loadingYears: PropTypes.bool,
+    erroredEntity: PropTypes.bool
   }
 
   constructor (props) {
