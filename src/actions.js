@@ -59,6 +59,7 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity) => {
 }, 200)
 
 export const updateSelectedEntity = (entity) => (dispatch, getState) => {
+  entity = entity.toLocaleLowerCase()
   if (entity === getState().app.entity) {
     return
   }
@@ -67,16 +68,8 @@ export const updateSelectedEntity = (entity) => (dispatch, getState) => {
   return debouncedYearOptionsFetch(dispatch, entity)
 }
 
-export const updateSelectedYear = (year) => (dispatch, getState) => {
-  if (year === getState().app.year) {
-    return
-  }
-
-  dispatch({ type: UPDATE_SELECTED_YEAR, year })
+export const fetchContributionsData = (entity, year) => (dispatch) => {
   dispatch({ type: START_CONTRIBUTION_UPDATE })
-
-  const entity = getState().app.entity
-
   return axios.get(`${BASE_URL}/v1/contributions`, { params: {entity, year} })
     .then((response) => {
       if (response.status !== 200) {
@@ -90,6 +83,16 @@ export const updateSelectedYear = (year) => (dispatch, getState) => {
         })
       }
     })
+}
+
+export const updateSelectedYear = (year) => (dispatch, getState) => {
+  if (year === getState().app.year) {
+    return
+  }
+  dispatch({ type: UPDATE_SELECTED_YEAR, year })
+
+  const entity = getState().app.entity
+  return fetchContributionsData(entity, year)(dispatch)
 }
 
 export const setSceneContainer = (container) => {
