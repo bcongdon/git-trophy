@@ -7,10 +7,8 @@ import {
   START_YEARS_UPDATE,
   START_DOWNLOAD_LOAD,
   START_EXPORT_LOAD,
-  START_AUTHENTICATION,
   FINISHED_DOWNLOAD_LOAD,
   FINISHED_EXPORT_LOAD,
-  FINISHED_AUTHENTICATION,
   UPDATE_SELECTED_YEAR,
   UPDATE_SELECTED_ENTITY,
   UPDATE_SCENE_CONTAINER,
@@ -29,7 +27,6 @@ const INITIAL_STATE = {
   previewEntity: dummyData.username,
   previewYear: dummyData.year,
   container: null,
-  authenticating: false,
   erroredEntity: false
 }
 
@@ -56,12 +53,8 @@ export default function (state = INITIAL_STATE, action) {
       return {...state, loadingDownload: true}
     case START_EXPORT_LOAD:
       return {...state, loadingExport: true}
-    case START_AUTHENTICATION:
-      return {...state, authenticating: true}
 
     // On update completion
-    case FINISHED_AUTHENTICATION:
-      return {...state, authenticating: false}
     case FINISHED_EXPORT_LOAD:
       return {...state, loadingExport: false}
     case FINISHED_DOWNLOAD_LOAD:

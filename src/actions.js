@@ -10,7 +10,6 @@ import {
   START_AUTHENTICATION,
   FINISHED_EXPORT_LOAD,
   FINISHED_DOWNLOAD_LOAD,
-  FINISHED_AUTHENTICATION,
   UPDATE_SELECTED_YEAR,
   UPDATE_SELECTED_ENTITY,
   UPDATE_SCENE_CONTAINER,
@@ -126,15 +125,13 @@ export const downloadModel = () => (dispatch, getState) => {
 }
 
 export const exportModel = () => (dispatch, getState) => {
-  dispatch({type: START_EXPORT_LOAD})
   if (!getState().auth.isLoggedIn) {
-    dispatch({type: START_AUTHENTICATION})
     dispatch(login(authConfig))
     return
   }
-  dispatch({type: FINISHED_AUTHENTICATION})
 
   const { container, entity, year } = getState().app
+  dispatch({type: START_EXPORT_LOAD})
 
   // Yield control to the renderer
   return new Promise((resolve, reject) => {

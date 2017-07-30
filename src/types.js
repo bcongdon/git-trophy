@@ -9,7 +9,6 @@ export const START_AUTHENTICATION = 'start_authentication'
 
 export const FINISHED_DOWNLOAD_LOAD = 'finished_download_load'
 export const FINISHED_EXPORT_LOAD = 'finished_export_load'
-export const FINISHED_AUTHENTICATION = 'finished_authentication'
 
 export const ERRORED_YEAR_FETCH = 'errored_year_fetch'
 export const ERRORED_CONTRIBUTIONS_FETCH = 'errored_contributions_fetch'
