@@ -6,6 +6,7 @@ export const START_YEARS_UPDATE = 'start_years_update'
 export const START_DOWNLOAD_LOAD = 'start_download_load'
 export const START_EXPORT_LOAD = 'start_export_load'
 export const START_AUTHENTICATION = 'start_authentication'
+export const START_MODEL_LOADING = 'start_model_loading'
 
 export const FINISHED_DOWNLOAD_LOAD = 'finished_download_load'
 export const FINISHED_EXPORT_LOAD = 'finished_export_load'

@@ -8,7 +8,7 @@ import reducers from './reducers'
 import { authMiddleware } from 'redux-implicit-oauth2'
 import { createLogger } from 'redux-logger'
 import { updateSelectedEntity } from './actions'
-import { UPDATE_SELECTED_YEAR } from './types'
+import { UPDATE_SELECTED_YEAR, START_MODEL_LOADING } from './types'
 
 const middleware = [reduxThunk, authMiddleware]
 
@@ -24,6 +24,7 @@ if (urlParams.get('entity') && urlParams.get('year')) {
   const year = urlParams.get('year')
   const entity = urlParams.get('entity')
   if (parseInt(year) && entity) {
+    store.dispatch({type: START_MODEL_LOADING})
     store.dispatch({type: UPDATE_SELECTED_YEAR, year})
     updateSelectedEntity(entity)(store.dispatch, store.getState)
   }

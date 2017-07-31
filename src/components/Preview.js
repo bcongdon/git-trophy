@@ -12,7 +12,8 @@ export default class Preview extends React.Component {
     height: PropTypes.number.isRequired,
     data: PropTypes.array.isRequired,
     entity: PropTypes.string.isRequired,
-    year: PropTypes.string.isRequired
+    year: PropTypes.string.isRequired,
+    style: PropTypes.object
   }
 
   constructor (props) {
@@ -67,8 +68,11 @@ export default class Preview extends React.Component {
       data.push({count: Math.random(), level: Math.floor(Math.random() * 5)})
     }
 
+    const style = this.props.style || {}
+    style.cursor = 'move'
+
     return (
-      <div style={{cursor: 'move'}} ref='container'>
+      <div style={style} ref='container'>
         <React3 onAnimate={this.onAnimate} antialias mainCamera='maincamera' width={width} height={height} clearColor={0xffffff}>
           <scene ref='scene'>
 

@@ -12,7 +12,8 @@ export class PreviewContainer extends React.Component {
     entity: PropTypes.string.isRequired,
     year: PropTypes.string.isRequired,
     loadingContributions: PropTypes.bool,
-    setSceneContainer: PropTypes.func.isRequired
+    setSceneContainer: PropTypes.func.isRequired,
+    loadingModel: PropTypes.bool
   }
 
   render () {
@@ -24,7 +25,7 @@ export class PreviewContainer extends React.Component {
     )
 
     return (
-      <Segment>
+      <Segment loading={this.props.loadingModel}>
         <Header style={{height: 26}}>Preview &nbsp;{loader}</Header>
         <ContainerDimensions ref='container'>
           {({width, height}) => (
@@ -34,7 +35,8 @@ export class PreviewContainer extends React.Component {
               year={this.props.year}
               width={width - 25}
               height={500}
-              ref='preview' />
+              ref='preview'
+              style={this.props.loadingModel ? {opacity: 0} : null} />
           )}
         </ContainerDimensions>
       </Segment>
@@ -63,7 +65,8 @@ function mapStateToProps (state) {
     data: state.app.data,
     entity: state.app.previewEntity,
     year: state.app.previewYear,
-    loadingContributions: state.app.loadingContributions
+    loadingContributions: state.app.loadingContributions,
+    loadingModel: state.app.loadingModel
   }
 }
 

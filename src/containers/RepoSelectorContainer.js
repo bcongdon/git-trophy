@@ -28,6 +28,16 @@ export class RepoSelectorContainer extends React.Component {
     authenticating: PropTypes.bool
   }
 
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      exportAuthInProgress: false
+    }
+
+    this.handleExportClick = this.handleExportClick.bind(this)
+  }
+
   render () {
     const yearOptions = this.props.yearOptions.map((year) => {
       return {value: year, text: year}
@@ -46,13 +56,20 @@ export class RepoSelectorContainer extends React.Component {
           erroredEntity={this.props.erroredEntity} />
         <ExportPanel
           onDownloadClick={this.props.downloadModel}
-          onExportClick={this.props.exportModel}
+          onExportClick={this.handleExportClick}
           loadingDownload={this.props.loadingDownload}
           loadingExport={this.props.loadingExport || this.props.authenticating}
           year={this.props.year}
           entity={this.props.entity} />
       </div>
     )
+  }
+
+  handleExportClick () {
+    if (!this.props.isLoggedIn) {
+      this.setState({exportAuthInProgress: true})
+    }
+    this.props.exportModel()
   }
 
   componentDidUpdate () {
@@ -65,7 +82,8 @@ export class RepoSelectorContainer extends React.Component {
 
   checkAuthCallback () {
     // Check to see if auth callback has occurred
-    if (this.props.loadingExport && this.props.authenticating && this.props.isLoggedIn) {
+    if (this.props.isLoggedIn && this.state.exportAuthInProgress && !this.props.loadingExport) {
+      this.setState({exportAuthInProgress: false})
       this.props.exportModel()
     }
   }

@@ -7,6 +7,7 @@ import {
   START_YEARS_UPDATE,
   START_DOWNLOAD_LOAD,
   START_EXPORT_LOAD,
+  START_MODEL_LOADING,
   FINISHED_DOWNLOAD_LOAD,
   FINISHED_EXPORT_LOAD,
   UPDATE_SELECTED_YEAR,
@@ -24,6 +25,7 @@ const INITIAL_STATE = {
   loadingYears: false,
   loadingDownload: false,
   loadingExport: false,
+  loadingModel: false,
   previewEntity: dummyData.username,
   previewYear: dummyData.year,
   container: null,
@@ -39,7 +41,8 @@ export default function (state = INITIAL_STATE, action) {
         data: action.data,
         previewEntity: action.entity,
         previewYear: action.year,
-        loadingContributions: false
+        loadingContributions: false,
+        loadingModel: false
       }
     case RECEIVED_YEAR_OPTIONS:
       return {...state, yearOptions: action.years, loadingYears: false}
@@ -53,6 +56,8 @@ export default function (state = INITIAL_STATE, action) {
       return {...state, loadingDownload: true}
     case START_EXPORT_LOAD:
       return {...state, loadingExport: true}
+    case START_MODEL_LOADING:
+      return {...state, loadingModel: true}
 
     // On update completion
     case FINISHED_EXPORT_LOAD:
