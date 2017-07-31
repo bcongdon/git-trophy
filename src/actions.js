@@ -25,16 +25,16 @@ export const loadContributions = (entity, year) => (dispatch) => {
   dispatch({ type: START_CONTRIBUTION_UPDATE })
   return axios.get(`${BASE_URL}/v1/contributions`, { params: {entity, year} })
     .then((response) => {
-      if (response.status !== 200) {
-        // TODO: Handle error
-      } else {
-        dispatch({
-          type: RECEIVED_CONTRIBUTION_DATA,
-          data: response.data.contributions,
-          entity: entity,
-          year: year
-        })
-      }
+      updateQueryString(entity, year)
+      dispatch({
+        type: RECEIVED_CONTRIBUTION_DATA,
+        data: response.data.contributions,
+        entity: entity,
+        year: year
+      })
+    })
+    .catch(() => {
+      dispatch({type: ERRORED_CONTRIBUTIONS_FETCH})
     })
 }
 
@@ -46,25 +46,21 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity, year) => {
   dispatch({type: START_YEARS_UPDATE})
   return axios.get(`${BASE_URL}/v1/years`, { params: {entity} })
     .then((response) => {
-      if (response.status !== 200) {
-        // TODO: handle error
-      } else {
-        const years = response.data.years
-        dispatch({ type: RECEIVED_YEAR_OPTIONS, years: years })
+      const years = response.data.years
+      dispatch({ type: RECEIVED_YEAR_OPTIONS, years: years })
 
-        if (years) {
-          const previousYear = (new Date().getFullYear() - 1).toString()
-          let defaultYear
-          if (year && years.includes(year)) {
-            defaultYear = year
-          } else if (years.includes(previousYear)) {
-            defaultYear = previousYear
-          } else {
-            defaultYear = years[0]
-          }
-          dispatch({ type: UPDATE_SELECTED_YEAR, year: defaultYear })
-          loadContributions(entity, defaultYear)(dispatch)
+      if (years) {
+        const previousYear = (new Date().getFullYear() - 1).toString()
+        let defaultYear
+        if (year && years.includes(year)) {
+          defaultYear = year
+        } else if (years.includes(previousYear)) {
+          defaultYear = previousYear
+        } else {
+          defaultYear = years[0]
         }
+        dispatch({ type: UPDATE_SELECTED_YEAR, year: defaultYear })
+        loadContributions(entity, defaultYear)(dispatch)
       }
     })
     .catch(() => {
@@ -83,24 +79,12 @@ export const updateSelectedEntity = (entity) => (dispatch, getState) => {
   return debouncedYearOptionsFetch(dispatch, entity, year)
 }
 
-export const fetchContributionsData = (entity, year) => (dispatch) => {
-  dispatch({ type: START_CONTRIBUTION_UPDATE })
-  return axios.get(`${BASE_URL}/v1/contributions`, { params: {entity, year} })
-    .then((response) => {
-      if (response.status !== 200) {
-        // TODO: Handle error
-      } else {
-        dispatch({
-          type: RECEIVED_CONTRIBUTION_DATA,
-          data: response.data.contributions,
-          entity: entity,
-          year: year
-        })
-      }
-    })
-    .catch(() => {
-      dispatch({type: ERRORED_CONTRIBUTIONS_FETCH})
-    })
+const updateQueryString = (entity, year) => {
+  console.log(entity)
+  let newUrl = `?entity=${encodeURIComponent(entity)}`
+  newUrl += `&year=${year}`
+  console.log(newUrl)
+  history.replaceState('', '', newUrl)
 }
 
 export const updateSelectedYear = (year) => (dispatch, getState) => {
@@ -110,7 +94,7 @@ export const updateSelectedYear = (year) => (dispatch, getState) => {
   dispatch({ type: UPDATE_SELECTED_YEAR, year })
 
   const entity = getState().app.entity
-  return fetchContributionsData(entity, year)(dispatch)
+  return loadContributions(entity, year)(dispatch)
 }
 
 export const setSceneContainer = (container) => {

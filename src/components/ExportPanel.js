@@ -57,7 +57,7 @@ export default class ExportPanel extends React.Component {
 
   onTweetClick () {
     let twitterURL = 'https://twitter.com/share'
-    twitterURL += `?url=${this.getURL()}`
+    twitterURL += `?url=${encodeURIComponent(this.getURL())}`
     twitterURL += '&text=' + encodeURIComponent(
       'Check out this 3D model of my github contributions!'
     )
@@ -90,7 +90,8 @@ export default class ExportPanel extends React.Component {
               value={this.getURL()}
               style={{paddingRight: '0.5rem', paddingLeft: '0.5rem'}}
               className='copy-text-input'
-              ref={(el) => { this.copyInput = el }} />
+              ref={(el) => { this.copyInput = el }}
+              readOnly />
             <Popup
               inverted
               open={this.state.showCopyPopup}

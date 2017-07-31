@@ -1,4 +1,4 @@
-export const RECEIVED_CONTRIBUTION_DATA = 'update_contribution_data'
+export const RECEIVED_CONTRIBUTION_DATA = 'received_contribution_data'
 export const RECEIVED_YEAR_OPTIONS = 'received_year_options'
 
 export const START_CONTRIBUTION_UPDATE = 'start_contribution_update'
