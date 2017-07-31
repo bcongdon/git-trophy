@@ -20,6 +20,7 @@ export default class ExportPanel extends React.Component {
     }
 
     this.onCopyClick = this.onCopyClick.bind(this)
+    this.onTweetClick = this.onTweetClick.bind(this)
   }
 
   getURL () {
@@ -54,12 +55,22 @@ export default class ExportPanel extends React.Component {
     }, 1000)
   }
 
+  onTweetClick () {
+    let twitterURL = 'https://twitter.com/share'
+    twitterURL += `?url=${this.getURL()}`
+    twitterURL += '&text=' + encodeURIComponent(
+      'Check out this 3D model of my github contributions!'
+    )
+    window.open(twitterURL, '_blank')
+  }
+
   render () {
     const copyButton = (
       <Button
         size='mini'
         content='Copy'
-        onClick={this.onCopyClick} />
+        onClick={this.onCopyClick}
+        style={{marginRight: '0.5rem'}} />
     )
 
     return (
@@ -77,14 +88,18 @@ export default class ExportPanel extends React.Component {
           <Form.Group>
             <Input
               value={this.getURL()}
-              style={{paddingRight: '1rem', paddingLeft: '0.5rem'}}
-              className='copy-test-input'
+              style={{paddingRight: '0.5rem', paddingLeft: '0.5rem'}}
+              className='copy-text-input'
               ref={(el) => { this.copyInput = el }} />
             <Popup
               inverted
               open={this.state.showCopyPopup}
               trigger={copyButton}
               content='Copied!' />
+            <Button
+              primary
+              icon='twitter'
+              onClick={this.onTweetClick} />
           </Form.Group>
         </Form>
       </Segment>

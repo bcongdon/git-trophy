@@ -1,9 +1,19 @@
-.copy-test-input {
-    width: 84%;
+.copy-text-input {
+    width: 80%;
+}
+
+.copy-share-button {
+    padding-right: 0.5rem;
+}
+
+@media (max-width: 800px) {
+  .copy-text-input {
+      width: 70%;
+  }
 }
 
 @media (max-width: 500px) {
-  .copy-test-input {
-      width: 75%;
+  .copy-text-input {
+      width: 60%;
   }
 }
