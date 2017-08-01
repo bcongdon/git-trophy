@@ -74,7 +74,7 @@ class TrophyModel extends React.Component {
 
       const week = Math.floor(idx / 7)
       const dayOfWeek = idx % 7
-      const height = MIN_BAR_Z + (MAX_BAR_Z * (day.count / maxCount))
+      const height = MIN_BAR_Z + ((MAX_BAR_Z - MIN_BAR_Z) * (day.count / maxCount))
       const pos = new THREE.Vector3(
         x0 + week * 1 / 7,
         (0.5) * height + 0.25,
