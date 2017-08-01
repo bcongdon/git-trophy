@@ -62,7 +62,7 @@ def get_repo_commit_stats(repo_url, since=None):
             continue
         try:
             day, count = parse(arr[1]).date(), int(arr[0])
-            days.append(dict(day=day, count=count))
+            days.append(dict(day=day.isoformat(), count=count))
         except:
             print("Failed: " + str(arr))
     return sorted(days, key=lambda x: x['day'])

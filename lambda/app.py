@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from flask import Flask, request, Response, jsonify, abort
 from processify import processify
 from github_contributions import GithubUser
@@ -56,8 +56,14 @@ def contributions():
         return jsonify(error='invalid year'), 400
 
     if '/' in github_entity:
-        # TODO: process repo
-        pass
+        try:
+            stats = get_repo_commit_stats(
+                GITHUB_BASE_URL + github_entity,
+                since=date(year, 1, 1)
+            )
+            contributions_data = stats
+        except:
+            return jsonify(error='unable to get commit stats'), 400
     else:
         contributions_data = get_user_contributions(github_entity, year)
 
