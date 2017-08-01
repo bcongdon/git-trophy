@@ -1,46 +1,95 @@
 import delegator
 import tempfile
 import os
-import re
+from datetime import date
 from dateutil.parser import parse
+import shutil
+import requests
+from bs4 import BeautifulSoup
+import math
+
+COMMITS_PER_PAGE = 35
+
+
+def _is_git_available():
+    return delegator.run('git --version').return_code == 0
 
 # Import git if necessary
-if delegator.run('git --version').return_code != 0:
+if not _is_git_available():
     import git_lambda
     git_lambda.setup()
+    if not _is_git_available():
+        raise RuntimeError("Couldn't get a version of git to run!")
 
 
-def get_commit_stats(repo_url):
+def get_repo_commit_stats(repo_url, since=None):
     prev_dir = os.getcwd()
     with tempfile.TemporaryDirectory() as tmpdirname:
         os.chdir(tmpdirname)
         print("Cloning")
+
+        clone_command = [
+            'git',
+            'clone',
+            '--bare',
+            '--single-branch',
+            repo_url,
+            'repo'
+        ]
+
+        if since:
+            clone_command.append('--shallow-since=%s' % since.isoformat())
+
         delegator.run(
-            ' '.join(['git', 'clone', '--bare', repo_url, 'repo'])
+            ' '.join(clone_command)
         )
 
-        os.chdir('./repo')
+        os.chdir(os.path.join(tmpdirname, 'repo'))
 
         print("Logging")
         log = (delegator
-               .run(' '.join(['git', 'log']))
-               .pipe(' '.join(['grep', 'Date']))
-               .pipe(' '.join(['awk', '\'{print " : "$4" "$3" "$6}\'']))
+               .run(' '.join(
+                   ['git', 'log', '--pretty=format:"%ad"', '--date=short'])
+               )
                .pipe(' '.join(['uniq', '-c']))).out
+        shutil.rmtree(os.path.join(tmpdirname, 'repo'))
     os.chdir(prev_dir)
 
     days = []
     for line in log.split('\n'):
-        arr = line.split(':')
+        arr = line.strip().split(' ')
         if len(arr) != 2 or not arr[1].strip():
             continue
         try:
-            date, count = parse(arr[1]).date(), int(arr[0])
-            days.append(dict(day=date, count=count))
+            day, count = parse(arr[1]).date(), int(arr[0])
+            days.append(dict(day=day, count=count))
         except:
             print("Failed: " + str(arr))
     return sorted(days, key=lambda x: x['day'])
 
-if __name__ == '__main__':
-    get_commit_stats('https://github.com/apache/spark')
 
+def _get_num_commits(repo_url):
+    req = requests.get(repo_url)
+    soup = BeautifulSoup(req.content, 'html.parser')
+    num_commits = int(soup
+                      .find('li', {'class': 'commits'})
+                      .find('span', {'class': 'num'}).text.replace(',', ''))
+    return num_commits
+
+
+def get_repo_years(repo_url):
+    num_commits = _get_num_commits(repo_url)
+    last_page = requests.get(
+        repo_url + '/commits',
+        params=dict(page=math.ceil(num_commits / COMMITS_PER_PAGE))
+    )
+    soup = BeautifulSoup(last_page.content, 'html.parser')
+    commit = soup.find_all('li', {'class': 'commits-list-item'})[-1]
+    timestamp = commit.find('relative-time')['datetime']
+    initial_year = parse(timestamp).date().year
+    return list(range(initial_year, date.today().year + 1))
+
+
+if __name__ == '__main__':
+    # print(get_commit_stats('https://github.com/apache/spark', date(2017, 1, 1)))
+    print(get_repo_years('https://github.com/torvalds/linux'))

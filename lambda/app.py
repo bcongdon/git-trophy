@@ -4,8 +4,11 @@ from processify import processify
 from github_contributions import GithubUser
 from scraper import get_github_user_years
 from flask_cors import CORS
+from git import get_repo_commit_stats, get_repo_years
 app = Flask(__name__)
 CORS(app)
+
+GITHUB_BASE_URL = 'https://github.com/'
 
 
 @processify
@@ -74,8 +77,10 @@ def years():
         return jsonify(error='must provide entity'), 400
 
     if '/' in github_entity:
-        # TODO: Process repo
-        years = []
+        try:
+            years = get_repo_years(GITHUB_BASE_URL + github_entity)
+        except:
+            return jsonify(error='unable to get years'), 400
     else:
         try:
             years = get_github_user_years(github_entity)
