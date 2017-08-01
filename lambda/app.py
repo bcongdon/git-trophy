@@ -5,6 +5,7 @@ from github_contributions import GithubUser
 from scraper import get_github_user_years
 from flask_cors import CORS
 from git import get_repo_commit_stats, get_repo_years
+from utils import pad_year_data
 app = Flask(__name__)
 CORS(app)
 
@@ -59,10 +60,12 @@ def contributions():
         try:
             stats = get_repo_commit_stats(
                 GITHUB_BASE_URL + github_entity,
-                since=date(year, 1, 1)
+                since=date(year, 1, 1),
+                until=date(year, 12, 31)
             )
-            contributions_data = stats
-        except:
+            contributions_data = pad_year_data(stats)
+        except Exception as e:
+            print(e)
             return jsonify(error='unable to get commit stats'), 400
     else:
         contributions_data = get_user_contributions(github_entity, year)
@@ -85,6 +88,7 @@ def years():
     if '/' in github_entity:
         try:
             years = get_repo_years(GITHUB_BASE_URL + github_entity)
+            years = [str(y) for y in years]
         except:
             return jsonify(error='unable to get years'), 400
     else:

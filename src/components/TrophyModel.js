@@ -39,15 +39,20 @@ class TrophyModel extends React.Component {
     )
   }
 
-  getLabel () {
+  getLabelText () {
     const truncatedName = (
       this.props.entity.length < 23 ? this.props.entity : this.props.entity.slice(0, 20) + '...'
     )
 
+    const delimiter = this.props.entity.includes('/') ? '-' : '/'
+    return `${truncatedName} ${delimiter} ${this.props.year}`
+  }
+
+  getLabel () {
     return (
       <mesh position={new THREE.Vector3(0, -0.125, 0)}>
         <textGeometry
-          text={`${truncatedName} / ${this.props.year}`}
+          text={this.getLabelText()}
           size={0.33}
           height={0.1}
           font={new THREE.Font(droidFont)} />
