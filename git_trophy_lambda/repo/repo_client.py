@@ -1,12 +1,15 @@
 import delegator
 import tempfile
 import os
-from datetime import date, timedelta
+from datetime import date
 from dateutil.parser import parse
 import shutil
 import requests
 from bs4 import BeautifulSoup
 import math
+from collections import Counter
+import logging
+logger = logging.getLogger(__name__)
 
 COMMITS_PER_PAGE = 35
 
@@ -25,8 +28,8 @@ if not _is_git_available():
 def get_repo_commit_stats(repo_url, since=None):
     prev_dir = os.getcwd()
     with tempfile.TemporaryDirectory() as tmpdirname:
-        os.chdir(tmpdirname)
-        print("Cloning")
+        os.mkdir(os.path.join(tmpdirname, 'repo'))
+        logger.info("Cloning: {}".format(repo_url))
 
         clone_command = [
             'git',
@@ -34,38 +37,48 @@ def get_repo_commit_stats(repo_url, since=None):
             '--bare',
             '--single-branch',
             repo_url,
-            'repo'
+            os.path.join(tmpdirname, 'repo')
         ]
 
-        if since:
-            clone_command.append('--shallow-since=%s' % since.isoformat())
+        # if since:
+        #     clone_command += ['--shallow-since', since.isoformat()]
 
-        delegator.run(
-            ' '.join(clone_command)
-        )
+        clone = delegator.run(' '.join(clone_command))
+
+        if clone.return_code != 0:
+            raise RuntimeError(
+                'Return code from git clone was {}. '.format(
+                    clone.return_code
+                ) +
+                'Stderr: {}'.format(clone.err)
+            )
 
         os.chdir(os.path.join(tmpdirname, 'repo'))
+        logger.info('pwd: ' + delegator.run('pwd').out)
 
-        print("Logging")
-        log = (delegator
-               .run(' '.join(
-                   ['git', 'log', '--pretty=format:"%ad"', '--date=short'])
-               )
-               .pipe('sort')
-               .pipe(' '.join(['uniq', '-c']))).out
+        logger.info("Logging commits for {}".format(repo_url))
+        log = delegator.run(
+            ' '.join(['git', 'log', '--pretty=format:"%ad"', '--date=short'])
+        )
         shutil.rmtree(os.path.join(tmpdirname, 'repo'))
     os.chdir(prev_dir)
 
+    if log.return_code != 0:
+        raise RuntimeError(
+            'Return code from git log was {}. '.format(log.return_code) +
+            'Stderr: {}'.format(log.err)
+        )
+
     days = []
-    for line in log.split('\n'):
-        arr = line.strip().split(' ')
-        if len(arr) != 2 or not arr[1].strip():
+    counts = Counter(log.out.split('\n'))
+    for day, count in counts.items():
+        if not day or not day.strip():
             continue
+        day = parse(day).date()
         try:
-            day, count = parse(arr[1]).date(), int(arr[0])
             days.append(dict(day=day, count=count))
         except:
-            print("Failed: " + str(arr))
+            logger.error('Unable to parse day: {}'.format(day))
 
     days = [d for d in days if d['day'] >= since]
     return [dict(day=x['day'], count=x['count']) for x in days]

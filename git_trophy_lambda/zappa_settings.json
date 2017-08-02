@@ -4,8 +4,9 @@
         "aws_region": "us-east-1", 
         "profile_name": "default", 
         "s3_bucket": "zappa-3d-contributions",
-        "environment_variables": {
+        "aws_environment_variables": {
             "S3_CACHE_BUCKET": "git-trophy-repos"
-        }
+        },
+        "timeout_seconds": 60
     }
 }

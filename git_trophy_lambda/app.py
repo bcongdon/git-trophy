@@ -38,6 +38,11 @@ def get_user_contributions(github_entity, year):
     ]
 
 
+@app.route('/')
+def ping():
+    return 'PONG'
+
+
 @app.route('/v1/contributions')
 def contributions():
     github_entity = request.args.get('entity')

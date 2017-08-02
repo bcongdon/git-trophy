@@ -1,6 +1,8 @@
 import boto3
 import os
 import json
+import logging
+logger = logging.getLogger(__name__)
 s3 = boto3.resource('s3')
 
 BUCKET = os.environ.get('S3_CACHE_BUCKET')
@@ -23,6 +25,7 @@ def get_cached_data(repo, year):
 
 
 def cache_data(repo, year, contribution_data):
+    logger.info('Caching data for {} ({})'.format(repo, year))
     fname = _format_filename(repo, year)
     data = json.dumps(contribution_data)
     s3.Bucket(BUCKET).put_object(Key=fname, Body=data)
