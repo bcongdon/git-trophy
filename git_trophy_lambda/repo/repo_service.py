@@ -1,4 +1,4 @@
-from git_trophy_lambda.utils import pad_year_data
+from git_trophy_lambda import utils
 from datetime import date, timedelta
 from . import repo_cache
 from . import repo_client
@@ -12,6 +12,7 @@ def _prepare_commit_series(commits, year):
         - Pads days at beginning of year.
         - Fills in gaps within year
         - Sorts commits by date
+        - Applies "Github level" quartiles
     '''
     days = set(c['day'] for c in commits)
 
@@ -23,9 +24,15 @@ def _prepare_commit_series(commits, year):
         curr += timedelta(days=1)
 
     commits = sorted(commits, key=lambda x: x['day'])
-    commits = pad_year_data(commits)
-    commits = [dict(day=c['day'].isoformat(), count=c['count'])
-               for c in commits]
+    commits = utils.pad_year_data(commits)
+    quartiles = utils.calculate_quartiles(commits)
+    commits = [
+        dict(
+            day=c['day'].isoformat(),
+            count=c['count'],
+            level=utils.get_level(c['count'], quartiles)
+        )
+        for c in commits]
     return commits
 
 
