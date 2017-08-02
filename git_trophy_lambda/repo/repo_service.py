@@ -25,7 +25,7 @@ def _prepare_commit_series(commits, year):
 
     commits = sorted(commits, key=lambda x: x['day'])
     commits = utils.pad_year_data(commits)
-    quartiles = utils.calculate_quartiles(commits)
+    quartiles = utils.calculate_github_quartiles(commits)
     commits = [
         dict(
             day=c['day'].isoformat(),
