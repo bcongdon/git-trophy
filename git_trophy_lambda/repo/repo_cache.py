@@ -28,4 +28,8 @@ def cache_data(repo, year, contribution_data):
     logger.info('Caching data for {} ({})'.format(repo, year))
     fname = _format_filename(repo, year)
     data = json.dumps(contribution_data)
-    s3.Bucket(BUCKET).put_object(Key=fname, Body=data)
+    s3.Bucket(BUCKET).put_object(
+        Key=fname,
+        Body=data,
+        Tagging='year={}'.format(year)
+    )
