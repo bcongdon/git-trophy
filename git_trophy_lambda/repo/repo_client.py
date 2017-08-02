@@ -7,7 +7,6 @@ import shutil
 import requests
 from bs4 import BeautifulSoup
 import math
-import repo_cache
 
 COMMITS_PER_PAGE = 35
 
@@ -23,7 +22,7 @@ if not _is_git_available():
         raise RuntimeError("Couldn't get a version of git to run!")
 
 
-def get_repo_commit_stats(repo_url, since=None, until=None):
+def get_repo_commit_stats(repo_url, since=None):
     prev_dir = os.getcwd()
     with tempfile.TemporaryDirectory() as tmpdirname:
         os.chdir(tmpdirname)
@@ -58,7 +57,6 @@ def get_repo_commit_stats(repo_url, since=None, until=None):
     os.chdir(prev_dir)
 
     days = []
-    dates = {}
     for line in log.split('\n'):
         arr = line.strip().split(' ')
         if len(arr) != 2 or not arr[1].strip():
@@ -66,23 +64,11 @@ def get_repo_commit_stats(repo_url, since=None, until=None):
         try:
             day, count = parse(arr[1]).date(), int(arr[0])
             days.append(dict(day=day, count=count))
-            dates[day] = True
         except:
             print("Failed: " + str(arr))
 
-    # Fill in empty dates as necessary
-    if since and until:
-        curr = since
-        while curr <= until:
-            if curr not in dates:
-                days.append(dict(day=curr, count=0))
-            curr += timedelta(days=1)
-
-    days = sorted(days, key=lambda x: x['day'])
-    repo_cache.cache_data(repo_url, days)
-    days = filter(lambda x: since <= x['day'] <= until, days)
-    return [dict(day=x['day'].isoformat(), count=x['count'])
-            for x in days]
+    days = [d for d in days if d['day'] >= since]
+    return [dict(day=x['day'], count=x['count']) for x in days]
 
 
 def _get_num_commits(repo_url):

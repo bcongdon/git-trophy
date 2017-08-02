@@ -1,29 +1,23 @@
-from datetime import datetime, date
-from flask import Flask, request, Response, jsonify, abort
-from processify import processify
+from flask import Flask, request, jsonify, abort
 from github_contributions import GithubUser
-from scraper import get_github_user_years
+from user_client import get_github_user_years
 from flask_cors import CORS
-from git import get_repo_commit_stats, get_repo_years
-from utils import pad_year_data
+from repo.repo_service import get_repo_commit_stats, get_repo_years
 app = Flask(__name__)
 CORS(app)
 
-GITHUB_BASE_URL = 'https://github.com/'
+# @processify
+# def do_render(username, year):
+#     from model_generator import get_model_data
+#     return get_model_data(username, year)
 
 
-@processify
-def do_render(username, year):
-    from model_generator import get_model_data
-    return get_model_data(username, year)
-
-
-# @app.route('/v1/model')
-def generate_model():
-    username = request.args.get('user')
-    year = int(request.args.get('year', datetime.now().year - 1))
-    x3d_data = do_render(username, year)
-    return Response(x3d_data, mimetype='model/x3d+xml')
+# # @app.route('/v1/model')
+# def generate_model():
+#     username = request.args.get('user')
+#     year = int(request.args.get('year', datetime.now().year - 1))
+#     x3d_data = do_render(username, year)
+#     return Response(x3d_data, mimetype='model/x3d+xml')
 
 
 def get_user_contributions(github_entity, year):
@@ -58,12 +52,8 @@ def contributions():
 
     if '/' in github_entity:
         try:
-            stats = get_repo_commit_stats(
-                GITHUB_BASE_URL + github_entity,
-                since=date(year, 1, 1),
-                until=date(year, 12, 31)
-            )
-            contributions_data = pad_year_data(stats)
+            owner, repo = github_entity.split('/', 1)
+            contributions_data = get_repo_commit_stats(owner, repo, year)
         except Exception as e:
             print(e)
             return jsonify(error='unable to get commit stats'), 400
@@ -87,8 +77,8 @@ def years():
 
     if '/' in github_entity:
         try:
-            years = get_repo_years(GITHUB_BASE_URL + github_entity)
-            years = [str(y) for y in years]
+            owner, repo = github_entity.split('/', 1)
+            years = get_repo_years(owner, repo)
         except:
             return jsonify(error='unable to get years'), 400
     else:
