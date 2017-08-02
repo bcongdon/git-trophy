@@ -91,7 +91,7 @@ def years():
             years = get_github_user_years(github_entity)
         except:
             return jsonify(error='unable to get years'), 400
-    return jsonify(years=years)
+    return jsonify(years=years, entity=github_entity)
 
 
 @app.errorhandler(400)

@@ -42,10 +42,16 @@ export default function (state = INITIAL_STATE, action) {
         previewEntity: action.entity,
         previewYear: action.year,
         loadingContributions: false,
-        loadingModel: false
+        loadingModel: false,
+        erroredEntity: false
       }
     case RECEIVED_YEAR_OPTIONS:
-      return {...state, yearOptions: action.years, loadingYears: false}
+      return {
+        ...state,
+        yearOptions: action.years,
+        loadingYears: false,
+        erroredEntity: false
+      }
 
     // Trigger updates
     case START_CONTRIBUTION_UPDATE:

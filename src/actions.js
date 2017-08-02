@@ -21,10 +21,14 @@ import { login } from 'redux-implicit-oauth2'
 
 const BASE_URL = 'http://08ab6eb8.ngrok.io'
 
-export const loadContributions = (entity, year) => (dispatch) => {
+export const loadContributions = (entity, year) => (dispatch, getState) => {
   dispatch({ type: START_CONTRIBUTION_UPDATE })
   return axios.get(`${BASE_URL}/v1/contributions`, { params: {entity, year} })
     .then((response) => {
+      if(response.data.entity !== getState().app.entity) {
+        return
+      }
+
       updateQueryString(entity, year)
       dispatch({
         type: RECEIVED_CONTRIBUTION_DATA,
@@ -38,7 +42,7 @@ export const loadContributions = (entity, year) => (dispatch) => {
     })
 }
 
-const debouncedYearOptionsFetch = debounce((dispatch, entity, year) => {
+const debouncedYearOptionsFetch = debounce((dispatch, getState, entity, year) => {
   if (!entity) {
     return
   }
@@ -46,6 +50,10 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity, year) => {
   dispatch({type: START_YEARS_UPDATE})
   return axios.get(`${BASE_URL}/v1/years`, { params: {entity} })
     .then((response) => {
+      if(response.data.entity !== getState().app.entity) {
+        return
+      }
+
       const years = response.data.years
       dispatch({ type: RECEIVED_YEAR_OPTIONS, years: years })
 
@@ -60,13 +68,13 @@ const debouncedYearOptionsFetch = debounce((dispatch, entity, year) => {
           defaultYear = years[0]
         }
         dispatch({ type: UPDATE_SELECTED_YEAR, year: defaultYear })
-        loadContributions(entity, defaultYear)(dispatch)
+        loadContributions(entity, defaultYear)(dispatch, getState)
       }
     })
     .catch(() => {
       dispatch({type: ERRORED_YEAR_FETCH})
     })
-}, 200)
+}, 300)
 
 export const updateSelectedEntity = (entity) => (dispatch, getState) => {
   entity = entity.toLocaleLowerCase()
@@ -76,7 +84,7 @@ export const updateSelectedEntity = (entity) => (dispatch, getState) => {
 
   dispatch({ type: UPDATE_SELECTED_ENTITY, entity })
   const { year } = getState().app
-  return debouncedYearOptionsFetch(dispatch, entity, year)
+  return debouncedYearOptionsFetch(dispatch, getState, entity, year)
 }
 
 const updateQueryString = (entity, year) => {
@@ -94,7 +102,7 @@ export const updateSelectedYear = (year) => (dispatch, getState) => {
   dispatch({ type: UPDATE_SELECTED_YEAR, year })
 
   const entity = getState().app.entity
-  return loadContributions(entity, year)(dispatch)
+  return loadContributions(entity, year)(dispatch, getState)
 }
 
 export const setSceneContainer = (container) => {
