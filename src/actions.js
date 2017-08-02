@@ -57,41 +57,40 @@ const debouncedYearOptionsFetch = debounce((dispatch, getState, entity, year) =>
       const years = response.data.years
       dispatch({ type: RECEIVED_YEAR_OPTIONS, years: years })
 
-      if (years) {
-        const previousYear = (new Date().getFullYear() - 1).toString()
-        let defaultYear
-        if (year && years.includes(year)) {
-          defaultYear = year
-        } else if (years.includes(previousYear)) {
-          defaultYear = previousYear
-        } else {
-          defaultYear = years[0]
-        }
-        dispatch({ type: UPDATE_SELECTED_YEAR, year: defaultYear })
-        loadContributions(entity, defaultYear)(dispatch, getState)
+      if (!years) {
+        dispatch({type: ERRORED_YEAR_FETCH})
       }
+
+      const previousYear = (new Date().getFullYear() - 1).toString()
+      let defaultYear
+      if (year && years.includes(year)) {
+        defaultYear = year
+      } else if (years.includes(previousYear)) {
+        defaultYear = previousYear
+      } else {
+        defaultYear = years[0]
+      }
+      dispatch({ type: UPDATE_SELECTED_YEAR, year: defaultYear })
+      loadContributions(entity, defaultYear)(dispatch, getState)
     })
     .catch(() => {
       dispatch({type: ERRORED_YEAR_FETCH})
     })
 }, 300)
 
-export const updateSelectedEntity = (entity) => (dispatch, getState) => {
+export const updateSelectedEntity = (entity, year) => (dispatch, getState) => {
   entity = entity.toLocaleLowerCase()
   if (entity === getState().app.entity) {
     return
   }
 
   dispatch({ type: UPDATE_SELECTED_ENTITY, entity })
-  const { year } = getState().app
   return debouncedYearOptionsFetch(dispatch, getState, entity, year)
 }
 
 const updateQueryString = (entity, year) => {
-  console.log(entity)
   let newUrl = `?entity=${encodeURIComponent(entity)}`
   newUrl += `&year=${year}`
-  console.log(newUrl)
   history.replaceState('', '', newUrl)
 }
 

@@ -25,8 +25,7 @@ if (urlParams.get('entity') && urlParams.get('year')) {
   const entity = urlParams.get('entity')
   if (parseInt(year) && entity) {
     store.dispatch({type: START_MODEL_LOADING})
-    store.dispatch({type: UPDATE_SELECTED_YEAR, year})
-    updateSelectedEntity(entity)(store.dispatch, store.getState)
+    updateSelectedEntity(entity, year)(store.dispatch, store.getState)
   }
 }
 

@@ -81,7 +81,14 @@ export default function (state = INITIAL_STATE, action) {
     case UPDATE_SELECTED_YEAR:
       return {...state, year: action.year}
     case UPDATE_SELECTED_ENTITY:
-      return {...state, entity: action.entity, yearOptions: [], erroredEntity: false}
+      return {
+        ...state,
+        entity: action.entity,
+        yearOptions: [],
+        erroredEntity: false,
+        loadingYears: false,
+        loadingContributions: false
+      }
     case UPDATE_SCENE_CONTAINER:
       return {...state, container: action.container}
   }
