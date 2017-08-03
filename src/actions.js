@@ -19,13 +19,13 @@ import download from 'downloadjs'
 import authConfig from './oauth'
 import { login } from 'redux-implicit-oauth2'
 
-const BASE_URL = 'http://08ab6eb8.ngrok.io'
+const BASE_URL = 'https://xfrua0iqkc.execute-api.us-east-1.amazonaws.com/dev'
 
 export const loadContributions = (entity, year) => (dispatch, getState) => {
   dispatch({ type: START_CONTRIBUTION_UPDATE })
   return axios.get(`${BASE_URL}/v1/contributions`, { params: {entity, year} })
     .then((response) => {
-      if(response.data.entity !== getState().app.entity) {
+      if(entity !== getState().app.entity) {
         return
       }
 
@@ -38,6 +38,10 @@ export const loadContributions = (entity, year) => (dispatch, getState) => {
       })
     })
     .catch(() => {
+      if(entity !== getState().app.entity) {
+        return
+      }
+
       dispatch({type: ERRORED_CONTRIBUTIONS_FETCH})
     })
 }
@@ -50,7 +54,7 @@ const debouncedYearOptionsFetch = debounce((dispatch, getState, entity, year) =>
   dispatch({type: START_YEARS_UPDATE})
   return axios.get(`${BASE_URL}/v1/years`, { params: {entity} })
     .then((response) => {
-      if(response.data.entity !== getState().app.entity) {
+      if(entity !== getState().app.entity) {
         return
       }
 
@@ -74,6 +78,10 @@ const debouncedYearOptionsFetch = debounce((dispatch, getState, entity, year) =>
       loadContributions(entity, defaultYear)(dispatch, getState)
     })
     .catch(() => {
+      if(entity !== getState().app.entity) {
+        return
+      }
+
       dispatch({type: ERRORED_YEAR_FETCH})
     })
 }, 300)
