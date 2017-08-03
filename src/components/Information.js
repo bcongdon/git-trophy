@@ -28,7 +28,14 @@ export default class Information extends React.Component {
         <Header>
           Doesn't this overemphasize commits as a measure of progress?
         </Header>
-        <p>Lighten up! Sure, there may be more accurate measures of the progress of progress, but I just wanted something that would look cool on my desk. 😉</p>
+        <p>Lighten up! Sure, there may be more accurate measures of the progress of projects, but I just wanted something that would look cool on my desk. 😉</p>
+
+        <Header>
+          How did you build this?
+        </Header>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id erat varius, venenatis sapien sed, tincidunt libero. Mauris ac finibus risus. Vivamus malesuada auctor leo et congue. Aenean ornare ipsum vel elit iaculis, eu pulvinar libero sagittis. Curabitur sed massa rutrum, egestas nulla ac, varius enim. Duis dapibus felis elit, eget eleifend velit feugiat et. Nam quis aliquet nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+
+        <a className="github-button" href="https://github.com/bcongdon/git-trophy" data-show-count="true" aria-label="Star bcongdon/git-trophy on GitHub">Star</a>
       </Container>
     )
   }
