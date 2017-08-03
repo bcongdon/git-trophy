@@ -15,6 +15,8 @@ def get_github_user_years(username):
     if timeline:
         for entry in timeline.find_all('li'):
             years.append(entry.text.strip())
+    else:
+        raise RuntimeError('Unable to get user contributions info')
 
     return years
 
