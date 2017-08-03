@@ -54,6 +54,16 @@ def get_repo_commit_stats(owner, repo, year):
     except:
         logger.info("Cache missed for {}/{} {}".format(owner, repo, year))
 
+    # Validate year before cloning repo
+    try:
+        repo_years = get_repo_years(owner, repo)
+    except:
+        logger.error('Failed to get repo years for {}/{}'.format(owner, repo))
+    if str(year) not in repo_years:
+        raise ValueError(
+            'Year {} is invalid for repo {}/{}'.format(year, owner, repo)
+        )
+
     repo_url = _format_git_url(owner, repo)
     since = date(year, 1, 1)
     repo_commits = repo_client.get_repo_commit_stats(repo_url, since=since)
