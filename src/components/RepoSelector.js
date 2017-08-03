@@ -35,7 +35,9 @@ export default class RepoSelector extends React.Component {
   render () {
     return (
       <Segment attached='top'>
-        <Header>Generate a Git Trophy</Header>
+        <Header
+          size='large'
+          content='Generate a Git Trophy' />
         <Form size='large'>
           <Form.Field>
             <Form.Input

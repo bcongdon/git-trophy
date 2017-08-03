@@ -88,9 +88,6 @@ const debouncedYearOptionsFetch = debounce((dispatch, getState, entity, year) =>
 
 export const updateSelectedEntity = (entity, year) => (dispatch, getState) => {
   entity = entity.toLocaleLowerCase()
-  if (entity === getState().app.entity) {
-    return
-  }
 
   dispatch({ type: UPDATE_SELECTED_ENTITY, entity })
   return debouncedYearOptionsFetch(dispatch, getState, entity, year)

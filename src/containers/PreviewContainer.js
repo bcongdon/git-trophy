@@ -26,7 +26,7 @@ export class PreviewContainer extends React.Component {
 
     return (
       <Segment loading={this.props.loadingModel}>
-        <Header style={{height: 26}}>Preview &nbsp;{loader}</Header>
+        <Header size='large' style={{height: 26}}>Preview &nbsp;{loader}</Header>
         <ContainerDimensions ref='container'>
           {({width, height}) => (
             <Preview
