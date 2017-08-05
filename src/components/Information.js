@@ -8,32 +8,37 @@ export default class Information extends React.Component {
         <Header size='large'>
           About Git Trophy
         </Header>
-        <p>"Git Trophies" make great desk ornaments, and allow you to proudly display the hard work of you and your teams.</p>
-
-        <Header>
-          How do I get my Git Trophy printed?
-        </Header>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id erat varius, venenatis sapien sed, tincidunt libero. Mauris ac finibus risus. Vivamus malesuada auctor leo et congue. Aenean ornare ipsum vel elit iaculis, eu pulvinar libero sagittis. Curabitur sed massa rutrum, egestas nulla ac, varius enim. Duis dapibus felis elit, eget eleifend velit feugiat et. Nam quis aliquet nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+        <em>"Git Trophies" make great desk ornaments, and allow you to proudly display the hard work of you and your teams.</em>
 
         <Header>
           What do these look like as printed objects?
         </Header>
-        <p>Fusce sodales condimentum lectus vitae sollicitudin. Quisque a sagittis diam, in rhoncus diam. Mauris elementum, turpis eget accumsan placerat, magna dui iaculis odio, eget sollicitudin velit massa id diam. Aenean quis orci non elit iaculis malesuada. Phasellus ut convallis risus. Aenean convallis elit sed turpis venenatis, porttitor dapibus lacus fringilla. Vestibulum sollicitudin feugiat rhoncus. Pellentesque vestibulum lacus purus, eu blandit nisl gravida eget. Praesent volutpat eget quam eu viverra. Suspendisse in orci in diam condimentum vehicula. Nullam orci felis, ullamcorper eget dui in, consectetur imperdiet metus. Curabitur id mauris placerat, rhoncus lectus vitae, mattis nisl. Maecenas at felis viverra, fringilla ligula vel, efficitur odio. Nulla iaculis augue in arcu vestibulum laoreet.</p>
+        <p></p>
+
+        <Header>
+          How do I get my Git Trophy printed?
+        </Header>
+        <p>The easiest way I've found is to get them printed through <a href="https://www.shapeways.com/">Shapeways</a>. You can click on the Shapeways button to export your model, and then go through their process to order a print. I'd suggest using <strong>Coated Full Color Sandstone</strong> or the normal <strong>Full Color Sandstone</strong> materials, so the printed model retains its colors.</p>
+
+        <p>Of course, you can also download your model as an X3D file, and go about printing it yourself as well. The X3D file also maintains the colors of the model, but most hobbiest-grade 3D printers don't print in full color.</p>
 
         <Header>
           How expensive are these to print?
         </Header>
-        <p>Donec vehicula risus ac porta volutpat. Vestibulum tellus mi, vulputate eget ipsum sed, suscipit convallis ex. Cras vulputate purus nec justo bibendum vestibulum. Integer sed fermentum sem. Integer posuere libero id ipsum rutrum, id commodo metus finibus. Cras congue mollis justo eu vestibulum. Vestibulum vel metus est. Nam non orci mi. Aliquam posuere, enim ac rutrum scelerisque, justo massa dignissim nunc, ultricies rhoncus mauris lorem et metus. Cras porta hendrerit nunc at mattis. In ornare ultrices nunc.</p>
+        <p>If you go with my recommended scale (~6.6in x 1.1in x 0.9in), the Shapeways price is about <strong>$37</strong>. This can be adjusted up or down by changing the scale, and choosing whether or not to use the coated varient of the Full Color Sandstone material (the coated version will be more resliant, and less likely to break / degrade over time).</p>
 
         <Header>
           Doesn't this overemphasize commits as a measure of progress?
         </Header>
-        <p>Lighten up! Sure, there may be more accurate measures of the progress of projects, but I just wanted something that would look cool on my desk. 😉</p>
+        <p>Lighten up! Sure, there may be more accurate measures of the progress of projects, but I just wanted something that would look cool on my desk. 😁</p>
 
         <Header>
           How did you build this?
         </Header>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse id erat varius, venenatis sapien sed, tincidunt libero. Mauris ac finibus risus. Vivamus malesuada auctor leo et congue. Aenean ornare ipsum vel elit iaculis, eu pulvinar libero sagittis. Curabitur sed massa rutrum, egestas nulla ac, varius enim. Duis dapibus felis elit, eget eleifend velit feugiat et. Nam quis aliquet nunc. Interdum et malesuada fames ac ante ipsum primis in faucibus.</p>
+        <p><strong>Frontend:</strong> The app uses <a href="https://facebook.github.io/react/">React</a> and <a href="https://threejs.org/">Three.js</a> to generate and render the models.</p>
+        <p><strong>Backend:</strong> The site uses a <a href="https://aws.amazon.com/lambda/">AWS Lambda</a> serverless backend (managed by <a href="https://github.com/Miserlou/Zappa/">Zappa</a>) to scrape and serve Github contribution data.</p>
+
+        <p>All of the code for this project is open-source. Feel free to check out the <a href="https://github.com/bcongdon/git-trophy">git-trophy</a> repo (and leave a ⭐, if you're so inclined. 😉)</p>
 
         <a className="github-button" href="https://github.com/bcongdon/git-trophy" data-show-count="true" aria-label="Star bcongdon/git-trophy on GitHub">Star</a>
       </Container>

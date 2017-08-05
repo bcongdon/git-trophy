@@ -7,6 +7,6 @@
         "aws_environment_variables": {
             "S3_CACHE_BUCKET": "git-trophy-repos"
         },
-        "timeout_seconds": 60
+        "timeout_seconds": 90
     }
 }

@@ -28,7 +28,7 @@ export default class App extends React.Component {
           <Divider />
 
           <Grid.Row centered>
-            <Grid.Column mobile={16} tablet={16} computer={12}>
+            <Grid.Column mobile={16} tablet={16} computer={10}>
               <Information />
             </Grid.Column>
           </Grid.Row>
