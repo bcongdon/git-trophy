@@ -8,7 +8,7 @@ import reducers from './reducers'
 import { authMiddleware } from 'redux-implicit-oauth2'
 import { createLogger } from 'redux-logger'
 import { updateSelectedEntity } from './actions'
-import { UPDATE_SELECTED_YEAR, START_MODEL_LOADING } from './types'
+import { START_MODEL_LOADING } from './types'
 
 const middleware = [reduxThunk, authMiddleware]
 

@@ -4,11 +4,11 @@ import { Segment, Button, Form, Divider, Grid, Input, Popup } from 'semantic-ui-
 
 export default class ExportPanel extends React.Component {
   static propTypes = {
-    onDownloadClick: PropTypes.func.isRequired,
+    entity: PropTypes.string,
     loadingDownload: PropTypes.bool,
     loadingExport: PropTypes.bool,
+    onDownloadClick: PropTypes.func.isRequired,
     onExportClick: PropTypes.func.isRequired,
-    entity: PropTypes.string,
     year: PropTypes.string
   }
 

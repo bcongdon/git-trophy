@@ -2,30 +2,30 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
-  loadContributions,
-  updateSelectedYear,
-  updateSelectedEntity,
   downloadModel,
-  exportModel } from '../actions'
+  exportModel,
+  loadContributions,
+  updateSelectedEntity,
+  updateSelectedYear } from '../actions'
 import RepoSelector from '../components/RepoSelector'
 import ExportPanel from '../components/ExportPanel'
 
 export class RepoSelectorContainer extends React.Component {
   static propTypes = {
-    loadContributions: PropTypes.func.isRequired,
-    loadingDownload: PropTypes.bool,
-    updateSelectedYear: PropTypes.func.isRequired,
-    updateSelectedEntity: PropTypes.func.isRequired,
+    authenticating: PropTypes.bool,
     downloadModel: PropTypes.func.isRequired,
     entity: PropTypes.string.isRequired,
-    year: PropTypes.string.isRequired,
-    yearOptions: PropTypes.array.isRequired,
-    loadingYears: PropTypes.bool,
-    loadingExport: PropTypes.bool,
+    erroredEntity: PropTypes.bool,
     exportModel: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool,
-    erroredEntity: PropTypes.bool,
-    authenticating: PropTypes.bool
+    loadContributions: PropTypes.func.isRequired,
+    loadingDownload: PropTypes.bool,
+    loadingExport: PropTypes.bool,
+    loadingYears: PropTypes.bool,
+    updateSelectedEntity: PropTypes.func.isRequired,
+    updateSelectedYear: PropTypes.func.isRequired,
+    year: PropTypes.string.isRequired,
+    yearOptions: PropTypes.array.isRequired
   }
 
   constructor (props) {
@@ -90,24 +90,24 @@ export class RepoSelectorContainer extends React.Component {
 }
 
 const actions = {
-  loadContributions,
-  updateSelectedYear,
-  updateSelectedEntity,
   downloadModel,
-  exportModel
+  exportModel,
+  loadContributions,
+  updateSelectedEntity,
+  updateSelectedYear
 }
 
 function mapStateToProps (state) {
   return {
+    authenticating: state.auth.isAuthenticating,
     entity: state.app.entity,
-    year: state.app.year,
-    yearOptions: state.app.yearOptions,
-    loadingYears: state.app.loadingYears,
+    erroredEntity: state.app.erroredEntity,
+    isLoggedIn: state.auth.isLoggedIn,
     loadingDownload: state.app.loadingDownload,
     loadingExport: state.app.loadingExport,
-    isLoggedIn: state.auth.isLoggedIn,
-    authenticating: state.auth.isAuthenticating,
-    erroredEntity: state.app.erroredEntity
+    loadingYears: state.app.loadingYears,
+    year: state.app.year,
+    yearOptions: state.app.yearOptions
   }
 }
 

@@ -4,13 +4,13 @@ import { Segment, Form, Dropdown, Header } from 'semantic-ui-react'
 
 export default class RepoSelector extends React.Component {
   static propTypes = {
-    yearOptions: PropTypes.array.isRequired,
     entity: PropTypes.string.isRequired,
-    year: PropTypes.string.isRequired,
-    updateSelectedYear: PropTypes.func.isRequired,
-    updateSelectedEntity: PropTypes.func.isRequired,
+    erroredEntity: PropTypes.bool,
     loadingYears: PropTypes.bool,
-    erroredEntity: PropTypes.bool
+    updateSelectedEntity: PropTypes.func.isRequired,
+    updateSelectedYear: PropTypes.func.isRequired,
+    year: PropTypes.string.isRequired,
+    yearOptions: PropTypes.array.isRequired
   }
 
   constructor (props) {

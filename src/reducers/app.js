@@ -1,35 +1,35 @@
 import dummyData from '../data/gaearon2016.json'
 
 import {
+  ERRORED_CONTRIBUTIONS_FETCH,
+  ERRORED_YEAR_FETCH,
+  FINISHED_DOWNLOAD_LOAD,
+  FINISHED_EXPORT_LOAD,
   RECEIVED_CONTRIBUTION_DATA,
   RECEIVED_YEAR_OPTIONS,
   START_CONTRIBUTION_UPDATE,
-  START_YEARS_UPDATE,
   START_DOWNLOAD_LOAD,
   START_EXPORT_LOAD,
   START_MODEL_LOADING,
-  FINISHED_DOWNLOAD_LOAD,
-  FINISHED_EXPORT_LOAD,
-  UPDATE_SELECTED_YEAR,
-  UPDATE_SELECTED_ENTITY,
+  START_YEARS_UPDATE,
   UPDATE_SCENE_CONTAINER,
-  ERRORED_YEAR_FETCH,
-  ERRORED_CONTRIBUTIONS_FETCH } from '../types'
+  UPDATE_SELECTED_ENTITY,
+  UPDATE_SELECTED_YEAR } from '../types'
 
 const INITIAL_STATE = {
+  container: null,
   data: dummyData.contributions,
   entity: dummyData.username,
-  year: dummyData.year,
-  yearOptions: ['2017', '2016', '2015', '2014', '2013', '2012', '2011'],
+  erroredEntity: false,
   loadingContributions: false,
-  loadingYears: false,
   loadingDownload: false,
   loadingExport: false,
   loadingModel: false,
+  loadingYears: false,
   previewEntity: dummyData.username,
   previewYear: dummyData.year,
-  container: null,
-  erroredEntity: false
+  year: dummyData.year,
+  yearOptions: ['2017', '2016', '2015', '2014', '2013', '2012', '2011']
 }
 
 export default function (state = INITIAL_STATE, action) {
@@ -39,18 +39,18 @@ export default function (state = INITIAL_STATE, action) {
       return {
         ...state,
         data: action.data,
-        previewEntity: action.entity,
-        previewYear: action.year,
+        erroredEntity: false,
         loadingContributions: false,
         loadingModel: false,
-        erroredEntity: false
+        previewEntity: action.entity,
+        previewYear: action.year
       }
     case RECEIVED_YEAR_OPTIONS:
       return {
         ...state,
-        yearOptions: action.years,
+        erroredEntity: false,
         loadingYears: false,
-        erroredEntity: false
+        yearOptions: action.years
       }
 
     // Trigger updates
@@ -84,10 +84,10 @@ export default function (state = INITIAL_STATE, action) {
       return {
         ...state,
         entity: action.entity,
-        yearOptions: [],
         erroredEntity: false,
+        loadingContributions: false,
         loadingYears: false,
-        loadingContributions: false
+        yearOptions: []
       }
     case UPDATE_SCENE_CONTAINER:
       return {...state, container: action.container}

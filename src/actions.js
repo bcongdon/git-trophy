@@ -1,19 +1,19 @@
 import axios from 'axios'
 import debounce from 'debounce'
 import {
+  ERRORED_CONTRIBUTIONS_FETCH,
+  ERRORED_YEAR_FETCH,
+  FINISHED_DOWNLOAD_LOAD,
+  FINISHED_EXPORT_LOAD,
   RECEIVED_CONTRIBUTION_DATA,
   RECEIVED_YEAR_OPTIONS,
   START_CONTRIBUTION_UPDATE,
-  START_YEARS_UPDATE,
   START_DOWNLOAD_LOAD,
   START_EXPORT_LOAD,
-  FINISHED_EXPORT_LOAD,
-  FINISHED_DOWNLOAD_LOAD,
-  UPDATE_SELECTED_YEAR,
-  UPDATE_SELECTED_ENTITY,
+  START_YEARS_UPDATE,
   UPDATE_SCENE_CONTAINER,
-  ERRORED_YEAR_FETCH,
-  ERRORED_CONTRIBUTIONS_FETCH } from './types'
+  UPDATE_SELECTED_ENTITY,
+  UPDATE_SELECTED_YEAR } from './types'
 import exportSceneX3D from './x3d-exporter'
 import download from 'downloadjs'
 import authConfig from './oauth'
@@ -25,7 +25,7 @@ export const loadContributions = (entity, year) => (dispatch, getState) => {
   dispatch({ type: START_CONTRIBUTION_UPDATE })
   return axios.get(`${BASE_URL}/v1/contributions`, { params: {entity, year} })
     .then((response) => {
-      if(entity !== getState().app.entity) {
+      if (entity !== getState().app.entity) {
         return
       }
 
@@ -38,7 +38,7 @@ export const loadContributions = (entity, year) => (dispatch, getState) => {
       })
     })
     .catch(() => {
-      if(entity !== getState().app.entity) {
+      if (entity !== getState().app.entity) {
         return
       }
 
@@ -54,7 +54,7 @@ const debouncedYearOptionsFetch = debounce((dispatch, getState, entity, year) =>
   dispatch({type: START_YEARS_UPDATE})
   return axios.get(`${BASE_URL}/v1/years`, { params: {entity} })
     .then((response) => {
-      if(entity !== getState().app.entity) {
+      if (entity !== getState().app.entity) {
         return
       }
 
@@ -78,7 +78,7 @@ const debouncedYearOptionsFetch = debounce((dispatch, getState, entity, year) =>
       loadContributions(entity, defaultYear)(dispatch, getState)
     })
     .catch(() => {
-      if(entity !== getState().app.entity) {
+      if (entity !== getState().app.entity) {
         return
       }
 
