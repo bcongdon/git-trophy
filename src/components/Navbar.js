@@ -4,7 +4,11 @@ import { Menu } from 'semantic-ui-react'
 const Navbar = () => (
   <Menu>
     <Menu.Item>
-      🏆 &nbsp; Git Trophy
+      <img
+        style={{height: 24, width: 'auto', paddingRight: 8}}
+        src='img/trophy.png'
+        />
+      Git Trophy
     </Menu.Item>
   </Menu>
 )
