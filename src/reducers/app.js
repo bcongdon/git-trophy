@@ -1,4 +1,4 @@
-import dummyData from '../data/gaearon2016.json'
+import dummyData from '../data/facebook-react2016.json'
 
 import {
   ERRORED_CONTRIBUTIONS_FETCH,
@@ -19,17 +19,17 @@ import {
 const INITIAL_STATE = {
   container: null,
   data: dummyData.contributions,
-  entity: dummyData.username,
+  entity: dummyData.entity,
   erroredEntity: false,
   loadingContributions: false,
   loadingDownload: false,
   loadingExport: false,
   loadingModel: false,
   loadingYears: false,
-  previewEntity: dummyData.username,
-  previewYear: dummyData.year,
-  year: dummyData.year,
-  yearOptions: ['2017', '2016', '2015', '2014', '2013', '2012', '2011']
+  previewEntity: dummyData.entity,
+  previewYear: dummyData.year.toString(),
+  year: dummyData.year.toString(),
+  yearOptions: ['2017', '2016', '2015', '2014', '2013']
 }
 
 export default function (state = INITIAL_STATE, action) {

@@ -13,7 +13,7 @@ export default class Information extends React.Component {
         <Header>
           What do these look like as printed objects?
         </Header>
-        <p />
+        <p></p>
 
         <Header>
           How do I get my Git Trophy printed?
@@ -22,10 +22,12 @@ export default class Information extends React.Component {
 
         <p>Of course, you can also download your model as an X3D file, and go about printing it yourself as well. The X3D file also maintains the colors of the model, but most hobbiest-grade 3D printers don't print in full color.</p>
 
+        <p>As a "disclaimer", I don't get any kind of kickback or referral from Shapeways, I just like their service.</p>
+
         <Header>
           How expensive are these to print?
         </Header>
-        <p>If you go with my recommended scale (~6.6in x 1.1in x 0.9in), the Shapeways price is about <strong>$37</strong>. This can be adjusted up or down by changing the scale, and choosing whether or not to use the coated varient of the Full Color Sandstone material (the coated version will be more resliant, and less likely to break / degrade over time).</p>
+        <p>If you go with my recommended scale (~6.6in x 1.1in x 0.9in), the Shapeways price is about <strong>$37</strong>. This can be adjusted slightly by changing the scale of the model before printing, and choosing whether or not to use the coated varient of the Full Color Sandstone material. (The coated version will be more resliant, and less likely to break / degrade over time)</p>
 
         <Header>
           Doesn't this overemphasize commits as a measure of progress?

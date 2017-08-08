@@ -34,7 +34,7 @@ export class PreviewContainer extends React.Component {
               entity={this.props.entity}
               year={this.props.year}
               width={width - 25}
-              height={500}
+              height={450}
               ref='preview'
               style={this.props.loadingModel ? {opacity: 0} : null} />
           )}
