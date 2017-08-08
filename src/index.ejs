@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <% if (htmlWebpackPlugin.options.google_analytics) { %>
+        <%= htmlWebpackPlugin.options.google_analytics %>
+    <% } %>
     <link rel="icon" type="image/png" href="img/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="img/favicon-16x16.png" sizes="16x16" />
     <meta charset="UTF-8">
@@ -12,7 +15,6 @@
 
   <body>
     <div id="root"></div>
-    <div id="root2"></div>
     <!-- Attach React components -->
     <script type="text/javascript" src="dist/bundle.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>

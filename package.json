@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --progress",
     "build": "webpack --progress --optimize-minimize",
-    "build:production": "NODE_ENV=production npm run build",
+    "build:production": "webpack --progress --optimize-minimize -p",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "profile": "webpack --profile --json > webpack-stats.json",
@@ -56,6 +56,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-react": "^7.1.0",
     "eslint-plugin-standard": "^3.0.1",
+    "html-webpack-plugin": "^2.30.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "s3-deploy": "^0.7.5",
