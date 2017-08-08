@@ -9,7 +9,9 @@
     "build:production": "NODE_ENV=production npm run build",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
-    "profile": "webpack --profile --json > webpack-stats.json"
+    "profile": "webpack --profile --json > webpack-stats.json",
+    "upload": "s3-deploy ./public/** ./public/*/** --cwd ./public/ --bucket gittrophy.com",
+    "deploy": "npm run build:production && npm run upload"
   },
   "repository": {
     "type": "git",
@@ -29,7 +31,7 @@
     "react-redux": "^5.0.5",
     "react-three-renderer": "^3.1.0",
     "redux": "^3.7.2",
-    "redux-implicit-oauth2": "git+https://github.com/bcongdon/redux-implicit-oauth2.git",
+    "redux-implicit-oauth2": "^1.1.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.71.1",
@@ -42,6 +44,7 @@
     "babel-core": "^6.25.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
+    "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
@@ -55,6 +58,7 @@
     "eslint-plugin-standard": "^3.0.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "s3-deploy": "^0.7.5",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1"
   }
