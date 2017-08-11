@@ -1,7 +1,28 @@
 import React from 'react'
 import { Container, Header } from 'semantic-ui-react'
+import Lightbox from 'react-images'
 
 export default class Information extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      lightboxOpen: false,
+      currentImage: 0
+    }
+
+    this.closeLightbox = this.closeLightbox.bind(this)
+    this.openLightbox = this.openLightbox.bind(this)
+  }
+
+  openLightbox () {
+    this.setState({ lightboxOpen: true })
+  }
+
+  closeLightbox () {
+    this.setState({ lightboxOpen: false })
+  }
+
   render () {
     return (
       <Container textAlign='left' style={{fontSize: 16}}>
@@ -13,12 +34,27 @@ export default class Information extends React.Component {
         <Header>
           What do these look like as printed objects?
         </Header>
-        <p></p>
+        <Lightbox
+            images={[
+              { src: '/img/trophy_examples/DSC_0608.jpg' },
+              { src: '/img/trophy_examples/DSC_0609.jpg',
+                caption: 'Box of floss, for scale' }
+            ]}
+            preloadNextImage
+            currentImage={this.state.currentImage}
+            onClickPrev={() => {this.setState({currentImage: this.state.currentImage - 1})}}
+            onClickNext={() => {this.setState({currentImage: this.state.currentImage + 1})}}
+            onClose={this.closeLightbox}
+            isOpen={this.state.lightboxOpen}
+          />
+        <p><a href="#" onClick={this.openLightbox}>Here's how mine turned out.</a></p>
 
         <Header>
           How do I get my Git Trophy printed?
         </Header>
-        <p>The easiest way I've found is to get them printed through <a href='https://www.shapeways.com/'>Shapeways</a>. You can click on the Shapeways button to export your model, and then go through their process to order a print. I'd suggest using <strong>Coated Full Color Sandstone</strong> or the normal <strong>Full Color Sandstone</strong> materials, so the printed model retains its colors.</p>
+        <p>The easiest way I've found is to get them printed through <a href='https://www.shapeways.com/'>Shapeways</a>. You can click on the Shapeways button to export your model, and then go through their process to order a print.</p>
+
+        <p>I'd suggest using <strong>Coated Full Color Sandstone</strong> or the normal <strong>Full Color Sandstone</strong> materials, so the printed model retains its colors.</p>
 
         <p>Of course, you can also download your model as an X3D file, and go about printing it yourself as well. The X3D file also maintains the colors of the model, but most hobbiest-grade 3D printers don't print in full color.</p>
 
