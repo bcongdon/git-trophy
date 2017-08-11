@@ -63,7 +63,9 @@ export default class Information extends React.Component {
         <Header>
           How expensive are these to print?
         </Header>
-        <p>If you go with my recommended scale (~6.6in x 1.1in x 0.9in), the Shapeways price is about <strong>$37</strong>. This can be adjusted slightly by changing the scale of the model before printing, and choosing whether or not to use the coated varient of the Full Color Sandstone material. (The coated version will be more resliant, and less likely to break / degrade over time)</p>
+        <p>If you go with my recommended scale (~6.6in x 1.1in x 0.9in), the Shapeways price is about <strong>$37</strong>.</p>
+
+        <p>The cost can be adjusted slightly by changing the scale of the model, and by choosing whether to use the coated varient of the Full Color Sandstone material. (The coated version will be more resliant, and less likely to break / degrade over time)</p>
 
         <Header>
           Doesn't this overemphasize commits as a measure of progress?

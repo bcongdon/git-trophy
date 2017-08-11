@@ -6,11 +6,11 @@
   "scripts": {
     "start": "webpack-dev-server --progress",
     "build": "webpack --progress",
-    "build:production": "webpack -p",
+    "build:production": "NODE_ENV=production webpack --progress -p",
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "profile": "webpack --profile --json > webpack-stats.json",
-    "upload": "s3-deploy ./public/** ./public/*/** --cwd ./public/ --bucket gittrophy.com",
+    "upload": "s3-deploy ./public/** ./public/*/** ./public/img/*/** --cwd ./public/ --bucket gittrophy.com",
     "deploy": "npm run build:production && npm run upload"
   },
   "repository": {
