@@ -40,8 +40,8 @@ def get_repo_commit_stats(repo_url, since=None):
             os.path.join(tmpdirname, 'repo')
         ]
 
-        # if since:
-        #     clone_command += ['--shallow-since', since.isoformat()]
+        if since:
+            clone_command += ['--shallow-since', since.isoformat()]
 
         clone = delegator.run(' '.join(clone_command))
 
