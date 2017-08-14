@@ -18,11 +18,16 @@ import exportSceneX3D from './x3d-exporter'
 import download from 'downloadjs'
 import authConfig from './oauth'
 import { login } from 'redux-implicit-oauth2'
+import {
+  registerDownload,
+  registerShapewaysExport,
+  registerChartDownload } from './analytics'
 
 const BASE_URL = 'https://xfrua0iqkc.execute-api.us-east-1.amazonaws.com/dev'
 
 export const loadContributions = (entity, year) => (dispatch, getState) => {
   dispatch({ type: START_CONTRIBUTION_UPDATE })
+  registerChartDownload(entity, year)
   return axios.get(`${BASE_URL}/v1/contributions`, { params: {entity, year} })
     .then((response) => {
       if (entity !== getState().app.entity) {
@@ -116,6 +121,7 @@ export const setSceneContainer = (container) => {
 export const downloadModel = () => (dispatch, getState) => {
   dispatch({type: START_DOWNLOAD_LOAD})
   const { container, entity, year } = getState().app
+  registerDownload(entity, year)
   const scene = container.refs.preview.refs.scene
   const fileName = `${entity.replace('/', '-')}-${year}.x3d`
 
@@ -135,6 +141,7 @@ export const exportModel = () => (dispatch, getState) => {
 
   const { container, entity, year } = getState().app
   dispatch({type: START_EXPORT_LOAD})
+  registerShapewaysExport(entity, year)
 
   // Yield control to the renderer
   return new Promise((resolve, reject) => {

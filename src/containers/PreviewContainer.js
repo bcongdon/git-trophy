@@ -16,6 +16,21 @@ export class PreviewContainer extends React.Component {
     loadingModel: PropTypes.bool
   }
 
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      stillLoading: false
+    }
+  }
+
+  componentWillReceiveProps (nextProps) {
+    console.log(nextProps)
+    if (this.state.stillLoading && !nextProps.loadingContributions) {
+      this.setState({ stillLoading: false })
+    }
+  }
+
   render () {
     const loader = (
       <Loader
@@ -23,10 +38,23 @@ export class PreviewContainer extends React.Component {
         size='small'
         inline />
     )
+    
+    const loadingMessageStyle = {
+      fontSize: 12,
+      fontWeight: 'normal',
+      position: 'relative',
+      bottom: 3,
+      paddingLeft: 5
+    }
+    const loadingMessage = (
+      <span style={loadingMessageStyle}>Loading Contributions can take a while...</span>
+    )
 
     return (
       <Segment loading={this.props.loadingModel}>
-        <Header size='large' style={{height: 26}}>Preview &nbsp;{loader}</Header>
+        <Header size='large' style={{height: 26}}>
+          Preview &nbsp;{loader} {this.state.stillLoading ? loadingMessage : null}
+        </Header>
         <ContainerDimensions ref='container'>
           {({width, height}) => (
             <Preview
@@ -49,6 +77,17 @@ export class PreviewContainer extends React.Component {
 
   componentDidUpdate () {
     this.updateScene()
+
+    const currEntity = this.props.entity
+    const currYear = this.props.year
+    if (this.props.loadingContributions) {
+      // Display a "patience" message after waiting 3 seconds
+      setTimeout(() => {
+        if(!this.state.stillLoading && this.props.year === currYear && this.props.entity === currEntity) {
+          this.setState({ stillLoading: true })
+        }
+      }, 3000)
+    }
   }
 
   updateScene () {
