@@ -7,7 +7,11 @@
 [![demo](assets/demo.gif)](https://gittrophy.com)
 
 ## Architecture / Design
-_TODO_
+GitTrophy uses [React](https://facebook.github.io/react/), [Redux](http://redux.js.org/), [react-three-renderer](https://github.com/toxicFork/react-three-renderer), and [react-semantic-ui](http://react.semantic-ui.com/) on the frontend.
+
+On the backend, GitTrophy has a [Zappa](https://github.com/Miserlou/Zappa/)-powered AWS Lambda API to scrape Github contribution data.
+
+Most information is available on my [blog post](http://benjamincongdon.me/blog/2017/08/11/Building-GitTrophy/) about this project.
 
 ## Run it yourself
 
