@@ -44,10 +44,11 @@ export class PreviewContainer extends React.Component {
       fontWeight: 'normal',
       position: 'relative',
       bottom: 3,
-      paddingLeft: 5
+      paddingLeft: 5,
+      display: 'inline-block'
     }
     const loadingMessage = (
-      <span style={loadingMessageStyle}>Loading Contributions can take a while...</span>
+      <span style={loadingMessageStyle}>Loading Contributions may take a while...</span>
     )
 
     return (
