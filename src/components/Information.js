@@ -77,6 +77,7 @@ export default class Information extends React.Component {
         </Header>
         <p><strong>Frontend:</strong> The app uses <a href='https://facebook.github.io/react/'>React</a> and <a href='https://threejs.org/'>Three.js</a> to generate and render the models.</p>
         <p><strong>Backend:</strong> The site uses a <a href='https://aws.amazon.com/lambda/'>AWS Lambda</a> serverless backend (managed by <a href='https://github.com/Miserlou/Zappa/'>Zappa</a>) to scrape and serve Github contribution data.</p>
+        <p>For more information, check out the <a href="http://benjamincongdon.me/blog/2017/08/11/Building-GitTrophy/">blog post</a> I wrote about building GitTrophy.</p>
 
         <p>All of the code for this project is open-source. Feel free to check out the <a href='https://github.com/bcongdon/git-trophy'>git-trophy</a> repo (and leave a ⭐, if you're so inclined. 😉)</p>
 
