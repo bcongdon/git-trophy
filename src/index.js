@@ -9,6 +9,7 @@ import { authMiddleware } from 'redux-implicit-oauth2'
 import { createLogger } from 'redux-logger'
 import { updateSelectedEntity } from './actions'
 import { START_MODEL_LOADING } from './types'
+import URLSearchParams from 'url-search-params'
 
 const middleware = [reduxThunk, authMiddleware]
 
