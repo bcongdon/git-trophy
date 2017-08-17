@@ -25,7 +25,6 @@ export class PreviewContainer extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    console.log(nextProps)
     if (this.state.stillLoading && !nextProps.loadingContributions) {
       this.setState({ stillLoading: false })
     }
