@@ -37,7 +37,7 @@ export class PreviewContainer extends React.Component {
         size='small'
         inline />
     )
-    
+
     const loadingMessageStyle = {
       fontSize: 12,
       fontWeight: 'normal',
@@ -83,7 +83,7 @@ export class PreviewContainer extends React.Component {
     if (this.props.loadingContributions) {
       // Display a "patience" message after waiting 3 seconds
       setTimeout(() => {
-        if(!this.state.stillLoading && this.props.year === currYear && this.props.entity === currEntity) {
+        if (!this.state.stillLoading && this.props.year === currYear && this.props.entity === currEntity) {
           this.setState({ stillLoading: true })
         }
       }, 3000)

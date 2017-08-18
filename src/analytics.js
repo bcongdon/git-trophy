@@ -2,7 +2,7 @@ import ReactGA from 'react-ga'
 
 ReactGA.initialize('UA-72102716-3', {
   titleCase: false
-});
+})
 
 function sendEvent (event) {
   if (process.env.NODE_ENV !== 'production') {

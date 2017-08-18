@@ -7,7 +7,7 @@ const Navbar = () => (
       <img
         style={{height: 24, width: 'auto', paddingRight: 8}}
         src='/img/trophy.png'
-        />
+      />
       Git Trophy
     </Menu.Item>
   </Menu>
