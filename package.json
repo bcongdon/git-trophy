@@ -1,5 +1,5 @@
 {
-  "name": "3d-contributions",
+  "name": "git-trophy",
   "version": "1.0.0",
   "description": "🖨 3D Print Your Github Contributions Chart",
   "main": "webpack.config.js",
@@ -10,19 +10,19 @@
     "lint": "eslint src/",
     "lint:fix": "eslint --fix src/",
     "profile": "webpack --profile --json > webpack-stats.json",
-    "upload": "s3-deploy ./public/** ./public/*/** ./public/img/*/** --cwd ./public/ --bucket gittrophy.com",
+    "upload": "s3-deploy ./public/** ./public/*/** ./public/img/*/** --cwd ./public/ --bucket gittrophy.com --cache 604800",
     "deploy": "npm run build:production && npm run upload"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bcongdon/3d-contributions.git"
+    "url": "git+https://github.com/bcongdon/git-trophy.git"
   },
   "author": "Benjamin Congdon",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bcongdon/3d-contributions/issues"
+    "url": "https://github.com/bcongdon/git-trophy/issues"
   },
-  "homepage": "https://github.com/bcongdon/3d-contributions#readme",
+  "homepage": "https://github.com/bcongdon/git-trophy#readme",
   "dependencies": {
     "axios": "^0.16.2",
     "debounce": "^1.0.2",

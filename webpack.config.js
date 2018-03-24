@@ -10,10 +10,6 @@ var google_analytics = process.env.NODE_ENV === 'production' ? fs.readFileSync('
 
 var config = {
   entry: APP_DIR + '/index.js',
-  output: {
-    path: BUILD_DIR,
-    filename: 'bundle.js'
-  },
   module: {
     loaders: [
       {
@@ -33,6 +29,10 @@ var config = {
       filename: path.resolve(__dirname, 'public', 'index.html')
     })
   ],
+  output: {
+    path: BUILD_DIR,
+    filename: '[name].[chunkhash].js',
+  },
   devServer: {
     contentBase: path.join(__dirname, "public"),
     publicPath: "/dist/",
