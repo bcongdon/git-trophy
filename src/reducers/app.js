@@ -29,7 +29,7 @@ const INITIAL_STATE = {
   previewEntity: dummyData.entity,
   previewYear: dummyData.year.toString(),
   year: dummyData.year.toString(),
-  yearOptions: ['2017', '2016', '2015', '2014', '2013']
+  yearOptions: ['2018', '2017', '2016', '2015', '2014', '2013']
 }
 
 export default function (state = INITIAL_STATE, action) {
