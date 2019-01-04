@@ -37,7 +37,7 @@ npm run deploy
 
 This repo isn't necessarily meant to be used to create an independent deployment of git-trophy, but there's nothing stopping you if you want to!
 
-**Note**: To deploy the backend/frontent you'll have to setup your [AWS credentials](https://aws.amazon.com/blogs/security/a-new-and-standardized-way-to-manage-credentials-in-the-aws-sdks/)
+**Note**: To deploy the backend/frontend you'll have to setup your [AWS credentials](https://aws.amazon.com/blogs/security/a-new-and-standardized-way-to-manage-credentials-in-the-aws-sdks/)
 
 * Alternatively, you can run the backend locally with `python git_trophy_lambda/app.py`
 * You'll also need to...
