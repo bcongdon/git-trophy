@@ -9,7 +9,7 @@ def get_github_user_years(username):
         raise RuntimeError('Unable to get github user info')
 
     soup = BeautifulSoup(req.content, 'html.parser')
-    timeline = soup.find('div', {'class': 'profile-timeline-year-list'})
+    timeline = soup.find('div', {'class': 'js-profile-timeline-year-list'})
 
     years = []
     if timeline:
@@ -19,6 +19,7 @@ def get_github_user_years(username):
         raise RuntimeError('Unable to get user contributions info')
 
     return years
+
 
 if __name__ == '__main__':
     print(get_github_user_years('bcongdon'))

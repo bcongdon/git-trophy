@@ -88,8 +88,9 @@ def _get_num_commits(repo_url):
     req = requests.get(repo_url)
     soup = BeautifulSoup(req.content, 'html.parser')
     num_commits = int(soup
-                      .find('li', {'class': 'commits'})
-                      .find('span', {'class': 'num'}).text.replace(',', ''))
+                      .find('svg', {'class': 'octicon-history'})
+                      .parent
+                      .find('strong').text.replace(',', ''))
     return num_commits
 
 
@@ -100,7 +101,7 @@ def get_repo_years(repo_url):
         params=dict(page=math.ceil(num_commits / COMMITS_PER_PAGE))
     )
     soup = BeautifulSoup(last_page.content, 'html.parser')
-    commit = soup.find_all('li', {'class': 'commits-list-item'})[-1]
+    commit = soup.find_all('li', {'class': 'js-commits-list-item'})[-1]
     timestamp = commit.find('relative-time')['datetime']
     initial_year = parse(timestamp).date().year
     return list(range(initial_year, date.today().year + 1))[::-1]
