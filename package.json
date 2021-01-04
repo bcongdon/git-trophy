@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/bcongdon/git-trophy#readme",
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.21.1",
     "debounce": "^1.0.2",
     "downloadjs": "^1.4.7",
     "react-container-dimensions": "^1.3.2",
