@@ -37,7 +37,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "semantic-ui-react": "^0.71.1",
-    "three": "^0.84.0",
+    "three": "^0.125.0",
     "three-orbit-controls": "^82.1.0",
     "three-x3d-loader": "git+https://github.com/bcongdon/three-x3d-loader.git",
     "url-search-params": "^0.10.0",
