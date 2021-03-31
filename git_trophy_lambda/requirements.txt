@@ -18,7 +18,7 @@ hjson==3.0.2
 idna==2.10
 importlib-metadata==2.0.0
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 jmespath==0.10.0
 kappa==0.6.0
 pexpect==4.8.0
