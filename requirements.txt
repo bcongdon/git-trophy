@@ -10,7 +10,7 @@ click==6.7
 delegator.py==0.0.13
 docutils==0.13.1
 durationpy==0.4
-Flask==0.12.2
+Flask==1.0
 Flask-Cors==3.0.3
 future==0.16.0
 futures==3.1.1
